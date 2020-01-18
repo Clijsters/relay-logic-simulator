@@ -1,5 +1,6 @@
 package resi.library;
 
+import lombok.Getter;
 import resi.common.Circuit;
 import resi.common.Component;
 import resi.common.Input;
@@ -7,37 +8,26 @@ import resi.common.Signal;
 
 /**
  * This is a 7-segment-display made of lamps.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
-public class SevenSegmentDisplay extends Component
-{
+@Getter
+public class SevenSegmentDisplay extends Component {
+
     private final Lamp a;
-
     private final Lamp b;
-
     private final Lamp c;
-
     private final Lamp d;
-
     private final Lamp e;
-
     private final Lamp f;
-
     private final Lamp g;
 
     private final Input inA;
-
     private final Input inB;
-
     private final Input inC;
-
     private final Input inD;
-
     private final Input inE;
-
     private final Input inF;
-
     private final Input inG;
 
     /**
@@ -75,77 +65,7 @@ public class SevenSegmentDisplay extends Component
         new Signal(local).from(inG).to(g.getIn());
     }
 
-    public Lamp getA()
-    {
-        return a;
-    }
-
-    public Lamp getB()
-    {
-        return b;
-    }
-
-    public Lamp getC()
-    {
-        return c;
-    }
-
-    public Lamp getD()
-    {
-        return d;
-    }
-
-    public Lamp getE()
-    {
-        return e;
-    }
-
-    public Lamp getF()
-    {
-        return f;
-    }
-
-    public Lamp getG()
-    {
-        return g;
-    }
-
-    public Input getInA()
-    {
-        return inA;
-    }
-
-    public Input getInB()
-    {
-        return inB;
-    }
-
-    public Input getInC()
-    {
-        return inC;
-    }
-
-    public Input getInD()
-    {
-        return inD;
-    }
-
-    public Input getInE()
-    {
-        return inE;
-    }
-
-    public Input getInF()
-    {
-        return inF;
-    }
-
-    public Input getInG()
-    {
-        return inG;
-    }
-
-    @Override
+	@Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

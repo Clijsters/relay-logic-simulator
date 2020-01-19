@@ -9,185 +9,147 @@ import de.clijsters.resi.library.SevenSegmentDecoder10;
  *
  * @author Peter H&auml;nsgen
  */
-public class RelayTimerDecoder10PCB extends Component
-{
-    private final Input powerIn;
+public class RelayTimerDecoder10PCB extends Component {
+	private final Input powerIn;
+	private final Input in0;
+	private final Input in1;
+	private final Input in2;
+	private final Input in3;
+	private final Input in4;
+	private final Input in5;
+	private final Input in6;
+	private final Input in7;
+	private final Input in8;
+	private final Input in9;
+	private final Output outA;
+	private final Output outB;
+	private final Output outC;
+	private final Output outD;
+	private final Output outE;
+	private final Output outF;
+	private final Output outG;
 
-    private final Input in0;
+	/**
+	 * The constructor.
+	 */
+	public RelayTimerDecoder10PCB(Circuit parent, String name) {
+		super(parent, name);
+		powerIn = new Input();
 
-    private final Input in1;
+		in0 = new Input();
+		in1 = new Input();
+		in2 = new Input();
+		in3 = new Input();
+		in4 = new Input();
+		in5 = new Input();
+		in6 = new Input();
+		in7 = new Input();
+		in8 = new Input();
+		in9 = new Input();
 
-    private final Input in2;
+		outA = new Output();
+		outB = new Output();
+		outC = new Output();
+		outD = new Output();
+		outE = new Output();
+		outF = new Output();
+		outG = new Output();
 
-    private final Input in3;
+		Circuit local = getLocalCircuit();
 
-    private final Input in4;
+		SevenSegmentDecoder10 decoder = new SevenSegmentDecoder10(local, name + "_Decoder");
 
-    private final Input in5;
+		new Signal(local).from(powerIn).to(decoder.getPowerIn());
 
-    private final Input in6;
+		new Signal(local).from(in0).to(decoder.getIn0());
+		new Signal(local).from(in1).to(decoder.getIn1());
+		new Signal(local).from(in2).to(decoder.getIn2());
+		new Signal(local).from(in3).to(decoder.getIn3());
+		new Signal(local).from(in4).to(decoder.getIn4());
+		new Signal(local).from(in5).to(decoder.getIn5());
+		new Signal(local).from(in6).to(decoder.getIn6());
+		new Signal(local).from(in7).to(decoder.getIn7());
+		new Signal(local).from(in8).to(decoder.getIn8());
+		new Signal(local).from(in9).to(decoder.getIn9());
 
-    private final Input in7;
+		new Signal(local).from(decoder.getOutA()).to(outA);
+		new Signal(local).from(decoder.getOutB()).to(outB);
+		new Signal(local).from(decoder.getOutC()).to(outC);
+		new Signal(local).from(decoder.getOutD()).to(outD);
+		new Signal(local).from(decoder.getOutE()).to(outE);
+		new Signal(local).from(decoder.getOutF()).to(outF);
+		new Signal(local).from(decoder.getOutG()).to(outG);
+	}
 
-    private final Input in8;
+	public Input getPowerIn() {
+		return powerIn;
+	}
 
-    private final Input in9;
+	public Input getIn0() {
+		return in0;
+	}
 
-    private final Output outA;
+	public Input getIn1() {
+		return in1;
+	}
 
-    private final Output outB;
+	public Input getIn2() {
+		return in2;
+	}
 
-    private final Output outC;
+	public Input getIn3() {
+		return in3;
+	}
 
-    private final Output outD;
+	public Input getIn4() {
+		return in4;
+	}
 
-    private final Output outE;
+	public Input getIn5() {
+		return in5;
+	}
 
-    private final Output outF;
+	public Input getIn6() {
+		return in6;
+	}
 
-    private final Output outG;
+	public Input getIn7() {
+		return in7;
+	}
 
-    /**
-     * The constructor.
-     */
-    public RelayTimerDecoder10PCB(Circuit parent, String name)
-    {
-        super(parent, name);
+	public Input getIn8() {
+		return in8;
+	}
 
-        powerIn = new Input();
+	public Input getIn9() {
+		return in9;
+	}
 
-        in0 = new Input();
-        in1 = new Input();
-        in2 = new Input();
-        in3 = new Input();
-        in4 = new Input();
-        in5 = new Input();
-        in6 = new Input();
-        in7 = new Input();
-        in8 = new Input();
-        in9 = new Input();
+	public Output getOutA() {
+		return outA;
+	}
 
-        outA = new Output();
-        outB = new Output();
-        outC = new Output();
-        outD = new Output();
-        outE = new Output();
-        outF = new Output();
-        outG = new Output();
+	public Output getOutB() {
+		return outB;
+	}
 
-        Circuit local = getLocalCircuit();
+	public Output getOutC() {
+		return outC;
+	}
 
-        SevenSegmentDecoder10 decoder = new SevenSegmentDecoder10(local, name + "_Decoder");
+	public Output getOutD() {
+		return outD;
+	}
 
-        new Signal(local).from(powerIn).to(decoder.getPowerIn());
+	public Output getOutE() {
+		return outE;
+	}
 
-        new Signal(local).from(in0).to(decoder.getIn0());
-        new Signal(local).from(in1).to(decoder.getIn1());
-        new Signal(local).from(in2).to(decoder.getIn2());
-        new Signal(local).from(in3).to(decoder.getIn3());
-        new Signal(local).from(in4).to(decoder.getIn4());
-        new Signal(local).from(in5).to(decoder.getIn5());
-        new Signal(local).from(in6).to(decoder.getIn6());
-        new Signal(local).from(in7).to(decoder.getIn7());
-        new Signal(local).from(in8).to(decoder.getIn8());
-        new Signal(local).from(in9).to(decoder.getIn9());
+	public Output getOutF() {
+		return outF;
+	}
 
-        new Signal(local).from(decoder.getOutA()).to(outA);
-        new Signal(local).from(decoder.getOutB()).to(outB);
-        new Signal(local).from(decoder.getOutC()).to(outC);
-        new Signal(local).from(decoder.getOutD()).to(outD);
-        new Signal(local).from(decoder.getOutE()).to(outE);
-        new Signal(local).from(decoder.getOutF()).to(outF);
-        new Signal(local).from(decoder.getOutG()).to(outG);
-    }
-
-    public Input getPowerIn()
-    {
-        return powerIn;
-    }
-
-    public Input getIn0()
-    {
-        return in0;
-    }
-
-    public Input getIn1()
-    {
-        return in1;
-    }
-
-    public Input getIn2()
-    {
-        return in2;
-    }
-
-    public Input getIn3()
-    {
-        return in3;
-    }
-
-    public Input getIn4()
-    {
-        return in4;
-    }
-
-    public Input getIn5()
-    {
-        return in5;
-    }
-
-    public Input getIn6()
-    {
-        return in6;
-    }
-
-    public Input getIn7()
-    {
-        return in7;
-    }
-
-    public Input getIn8()
-    {
-        return in8;
-    }
-
-    public Input getIn9()
-    {
-        return in9;
-    }
-
-    public Output getOutA()
-    {
-        return outA;
-    }
-
-    public Output getOutB()
-    {
-        return outB;
-    }
-
-    public Output getOutC()
-    {
-        return outC;
-    }
-
-    public Output getOutD()
-    {
-        return outD;
-    }
-
-    public Output getOutE()
-    {
-        return outE;
-    }
-
-    public Output getOutF()
-    {
-        return outF;
-    }
-
-    public Output getOutG()
-    {
-        return outG;
-    }
+	public Output getOutG() {
+		return outG;
+	}
 }

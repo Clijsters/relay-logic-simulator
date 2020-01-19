@@ -12,62 +12,50 @@ import de.clijsters.resi.util.console.Console;
  *
  * @author Peter H&auml;nsgen
  */
-public class PeakPowerMonitor implements Monitor
-{
-    private Circuit circuit;
+public class PeakPowerMonitor implements Monitor {
+	private Circuit circuit;
+	private int maxActiveLamps;
+	private int maxActiveRelays;
+	private int maxRelaySwitchCount;
+	private Console console;
 
-    private int maxActiveLamps;
+	/**
+	 * The constructor.
+	 */
+	public PeakPowerMonitor(Circuit circuit, int maxRelaySwitchCount, Console console) {
+		this.circuit = circuit;
+		this.maxRelaySwitchCount = maxRelaySwitchCount;
+		this.console = console;
+	}
 
-    private int maxActiveRelays;
+	@Override
+	public void monitor() {
+		int activeLamps = 0;
+		int activeRelays = 0;
 
-    private int maxRelaySwitchCount;
+		for (Lamp l : circuit.getAllParts(Lamp.class)) {
+			if (l.isOn()) {
+				activeLamps++;
+			}
+		}
 
-    private Console console;
+		for (Relay r : circuit.getAllParts(Relay.class)) {
+			if (Boolean.TRUE.equals(r.getCoilIn().getValue())) {
+				// multiple real relays may be needed
+				activeRelays += (r.getSwitchCount() + 1) / maxRelaySwitchCount;
+			}
+		}
 
-    /**
-     * The constructor.
-     */
-    public PeakPowerMonitor(Circuit circuit, int maxRelaySwitchCount, Console console)
-    {
-        this.circuit = circuit;
-        this.maxRelaySwitchCount = maxRelaySwitchCount;
-        this.console = console;
-    }
+		int oldMaxActiveLamps = maxActiveLamps;
+		int oldMaxActiveRelays = maxActiveRelays;
 
-    @Override
-    public void monitor()
-    {
-        int activeLamps = 0;
-        int activeRelays = 0;
+		maxActiveLamps = Math.max(maxActiveLamps, activeLamps);
+		maxActiveRelays = Math.max(maxActiveRelays, activeRelays);
 
-        for (Lamp l : circuit.getAllParts(Lamp.class))
-        {
-            if (l.isOn())
-            {
-                activeLamps++;
-            }
-        }
-
-        for (Relay r : circuit.getAllParts(Relay.class))
-        {
-            if (Boolean.TRUE.equals(r.getCoilIn().getValue()))
-            {
-                // multiple real relays may be needed
-                activeRelays += (r.getSwitchCount() + 1) / maxRelaySwitchCount;
-            }
-        }
-
-        int oldMaxActiveLamps = maxActiveLamps;
-        int oldMaxActiveRelays = maxActiveRelays;
-
-        maxActiveLamps = Math.max(maxActiveLamps, activeLamps);
-        maxActiveRelays = Math.max(maxActiveRelays, activeRelays);
-
-        if ((maxActiveLamps != oldMaxActiveLamps) || (maxActiveRelays != oldMaxActiveRelays))
-        {
-            console.clear();
-            console.println("Maximum active lamps: " + String.valueOf(maxActiveLamps));
-            console.println("Maximum active relays: " + String.valueOf(maxActiveRelays));
-        }
-    }
+		if ((maxActiveLamps != oldMaxActiveLamps) || (maxActiveRelays != oldMaxActiveRelays)) {
+			console.clear();
+			console.println("Maximum active lamps: " + maxActiveLamps);
+			console.println("Maximum active relays: " + maxActiveRelays);
+		}
+	}
 }

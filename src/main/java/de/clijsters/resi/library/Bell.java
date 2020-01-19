@@ -11,52 +11,43 @@ import java.awt.*;
  *
  * @author Peter H&auml;nsgen
  */
-public class Bell extends Part
-{
-    private final Input in;
+public class Bell extends Part {
+	private final Input in;
+	private long lastTime;
 
-    private long lastTime;
+	/**
+	 * The constructor.
+	 */
+	public Bell(Circuit circuit, String name) {
+		super(circuit, name);
 
-    /**
-     * The constructor.
-     */
-    public Bell(Circuit circuit, String name)
-    {
-        super(circuit, name);
+		in = new Input();
+	}
 
-        in = new Input();
-    }
+	public Input getIn() {
+		return in;
+	}
 
-    public Input getIn()
-    {
-        return in;
-    }
+	@Override
+	public void simulate() {
+		if (Boolean.TRUE.equals(in.getValue())) {
+			long time = System.currentTimeMillis();
+			long diff = time - lastTime;
+			if (diff > 120) {
+				Toolkit.getDefaultToolkit().beep();
+				lastTime = time;
+			}
+		}
+	}
 
-    @Override
-    public void simulate()
-    {
-        if (Boolean.TRUE.equals(in.getValue()))
-        {
-            long time = System.currentTimeMillis();
-            long diff = time - lastTime;
-            if (diff > 120)
-            {
-                Toolkit.getDefaultToolkit().beep();
-                lastTime = time;
-            }
-        }
-    }
+	@Override
+	public String toString() {
 
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[Bell ");
-        sb.append(getName());
-        sb.append(": in=");
-        sb.append(String.valueOf(in));
-        sb.append("]");
-
-        return sb.toString();
-    }
+		String sb = "[Bell " +
+				getName() +
+				": in=" +
+				in +
+				"]";
+		return sb;
+	}
 }

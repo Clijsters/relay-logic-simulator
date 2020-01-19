@@ -11,36 +11,30 @@ import java.awt.event.WindowEvent;
  *
  * @author Peter H&auml;nsgen
  */
-public class SimulatorFrame extends Frame
-{
-    private static final long serialVersionUID = 1L;
+public class SimulatorFrame extends Frame {
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * The constructor.
-     */
-    public SimulatorFrame(Simulator simulator)
-    {
-        // handle window events
-        addWindowListener(new WindowAdapter()
-        {
-            @Override
-            public void windowClosing(WindowEvent e)
-            {
-                simulator.stop();
-                System.exit(0);
-            }
+	/**
+	 * The constructor.
+	 */
+	public SimulatorFrame(Simulator simulator) {
+		// handle window events
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				simulator.stop();
+				System.exit(0);
+			}
 
-            @Override
-            public void windowIconified(WindowEvent e)
-            {
-                simulator.stop();
-            }
+			@Override
+			public void windowIconified(WindowEvent e) {
+				simulator.stop();
+			}
 
-            @Override
-            public void windowDeiconified(WindowEvent e)
-            {
-                simulator.start();
-            }
-        });
-    }
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				simulator.start();
+			}
+		});
+	}
 }

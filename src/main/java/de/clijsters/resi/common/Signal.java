@@ -16,99 +16,82 @@ package de.clijsters.resi.common;
  *
  * @author Peter H&auml;nsgen
  */
-public class Signal extends Element
-{
-    /**
-     * A counter for generating signal names automatically.
-     */
-    private static int instanceCount;
+public class Signal extends Element {
+	/**
+	 * A counter for generating signal names automatically.
+	 */
+	private static int instanceCount;
 
-    /**
-     * The current value of the signal.
-     */
-    private Boolean value;
+	/**
+	 * The current value of the signal.
+	 */
+	private Boolean value;
+	private Output[] externalOutputs;
+	private Input externalInput;
 
-    private Output[] externalOutputs;
+	/**
+	 * The constructor.
+	 */
+	public Signal(Circuit circuit) {
+		this(circuit, generateName());
+	}
 
-    private Input externalInput;
+	/**
+	 * The constructor.
+	 */
+	public Signal(Circuit circuit, String name) {
+		super(circuit, name);
 
-    /**
-     * The constructor.
-     */
-    public Signal(Circuit circuit)
-    {
-        this(circuit, generateName());
-    }
+		circuit.addSignal(this);
+	}
 
-    /**
-     * The constructor.
-     */
-    public Signal(Circuit circuit, String name)
-    {
-        super(circuit, name);
+	private static String generateName() {
+		return "s" + instanceCount++;
+	}
 
-        circuit.addSignal(this);
-    }
+	public Signal from(Output output) {
+		output.setSignal(this);
+		return this;
+	}
 
-    public Signal from(Output output)
-    {
-        output.setSignal(this);
-        return this;
-    }
+	public Signal from(Input input) {
+		this.externalInput = input;
+		return this;
+	}
 
-    public Signal from(Input input)
-    {
-        this.externalInput = input;
-        return this;
-    }
+	public Signal to(Output... outputs) {
+		this.externalOutputs = outputs;
+		return this;
+	}
 
-    public Signal to(Output... outputs)
-    {
-        this.externalOutputs = outputs;
-        return this;
-    }
+	public Signal to(Input... inputs) {
+		for (Input input : inputs) {
+			input.setSignal(this);
+		}
 
-    public Signal to(Input... inputs)
-    {
-        for (Input input : inputs)
-        {
-            input.setSignal(this);
-        }
+		return this;
+	}
 
-        return this;
-    }
+	public Boolean getValue() {
+		if (externalInput != null) {
+			return externalInput.getValue();
+		}
 
-    public void setValue(Boolean value)
-    {
-        this.value = value;
+		return value;
+	}
 
-        if (externalOutputs != null)
-        {
-            for (Output forward : externalOutputs)
-            {
-                forward.setValue(value);
-            }
-        }
-    }
+	public void setValue(Boolean value) {
+		this.value = value;
 
-    public Boolean getValue()
-    {
-        if (externalInput != null)
-        {
-            return externalInput.getValue();
-        }
+		if (externalOutputs != null) {
+			for (Output forward : externalOutputs) {
+				forward.setValue(value);
+			}
+		}
+	}
 
-        return value;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[Signal " + getName() + "=" + String.valueOf(value) + "]";
-    }
-
-    private static String generateName()
-    {
-        return "s" + String.valueOf(instanceCount++);
-    }
+	@Override
+	public String toString() {
+		return "[Signal " + getName() + "=" + value + "]";
+	}
 }

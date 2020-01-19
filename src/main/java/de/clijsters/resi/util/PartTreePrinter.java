@@ -10,36 +10,30 @@ import de.clijsters.resi.util.console.Console;
  *
  * @author Peter H&auml;nsgen
  */
-public class PartTreePrinter
-{
-    private Console console;
+public class PartTreePrinter {
+	private Console console;
 
-    /**
-     * The constructor.
-     */
-    public PartTreePrinter(Console console)
-    {
-        this.console = console;
+	/**
+	 * The constructor.
+	 */
+	public PartTreePrinter(Console console) {
+		this.console = console;
 
-    }
+	}
 
-    public void printParts(Circuit circuit)
-    {
-        console.println("*** Part Tree ***");
-        printParts(circuit, "");
-    }
+	public void printParts(Circuit circuit) {
+		console.println("*** Part Tree ***");
+		printParts(circuit, "");
+	}
 
-    private void printParts(Circuit circuit, String intend)
-    {
-        for (Part part : circuit.getParts())
-        {
-            console.println(intend + part.getName());
+	private void printParts(Circuit circuit, String intend) {
+		for (Part part : circuit.getParts()) {
+			console.println(intend + part.getName());
 
-            if (part instanceof Component)
-            {
-                Component comp = (Component) part;
-                printParts(comp.getLocalCircuit(), intend + "  ");
-            }
-        }
-    }
+			if (part instanceof Component) {
+				Component comp = (Component) part;
+				printParts(comp.getLocalCircuit(), intend + "  ");
+			}
+		}
+	}
 }

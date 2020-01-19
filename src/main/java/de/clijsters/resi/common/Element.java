@@ -5,28 +5,23 @@ package de.clijsters.resi.common;
  *
  * @author Peter H&auml;nsgen
  */
-public abstract class Element
-{
-    private Circuit circuit;
+public abstract class Element {
+	private Circuit circuit;
+	private String name;
 
-    private String name;
+	/**
+	 * The constructor.
+	 */
+	public Element(Circuit circuit, String name) {
+		this.circuit = circuit;
+		this.name = name;
+	}
 
-    /**
-     * The constructor.
-     */
-    public Element(Circuit circuit, String name)
-    {
-        this.circuit = circuit;
-        this.name = name;
-    }
+	public Circuit getCircuit() {
+		return circuit;
+	}
 
-    public Circuit getCircuit()
-    {
-        return circuit;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 }

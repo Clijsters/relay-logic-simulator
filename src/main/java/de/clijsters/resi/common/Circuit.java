@@ -9,142 +9,113 @@ import java.util.stream.Collectors;
  *
  * @author Peter H&auml;nsgen
  */
-public class Circuit
-{
-    private Map<String, Part> parts;
+public class Circuit {
+	private Map<String, Part> parts;
+	private Map<String, Signal> signals;
+	private List<Monitor> monitors;
 
-    private Map<String, Signal> signals;
+	/**
+	 * The constructor.
+	 */
+	public Circuit() {
+		parts = new LinkedHashMap<>();
+		signals = new LinkedHashMap<>();
+		monitors = new ArrayList<>();
+	}
 
-    private List<Monitor> monitors;
+	public void addSignal(Signal signal) {
+		String name = signal.getName();
+		if (signals.containsKey(name)) {
+			throw new IllegalArgumentException("Signal name '" + name + "' is not unique.");
+		}
 
-    /**
-     * The constructor.
-     */
-    public Circuit()
-    {
-        parts = new LinkedHashMap<>();
-        signals = new LinkedHashMap<>();
-        monitors = new ArrayList<>();
-    }
+		signals.put(name, signal);
+	}
 
-    public void addSignal(Signal signal)
-    {
-        String name = signal.getName();
-        if (signals.containsKey(name))
-        {
-            throw new IllegalArgumentException("Signal name '" + name + "' is not unique.");
-        }
+	public Signal getSignal(String name) {
+		return signals.get(name);
+	}
 
-        signals.put(name, signal);
-    }
+	public Collection<Signal> getSignals() {
+		return signals.values();
+	}
 
-    public Signal getSignal(String name)
-    {
-        return signals.get(name);
-    }
+	public void addPart(Part part) {
+		String name = part.getName();
+		if (parts.containsKey(name)) {
+			throw new IllegalArgumentException("Part name '" + name + "' is not unique.");
+		}
 
-    public Collection<Signal> getSignals()
-    {
-        return signals.values();
-    }
+		parts.put(name, part);
+	}
 
-    public void addPart(Part part)
-    {
-        String name = part.getName();
-        if (parts.containsKey(name))
-        {
-            throw new IllegalArgumentException("Part name '" + name + "' is not unique.");
-        }
+	public Part getPart(String name) {
+		return parts.get(name);
+	}
 
-        parts.put(name, part);
-    }
+	public Collection<Part> getParts() {
+		return parts.values();
+	}
 
-    public Part getPart(String name)
-    {
-        return parts.get(name);
-    }
+	public Collection<Part> getAllParts() {
+		List<Part> allParts = new ArrayList<>();
+		for (Part p : parts.values()) {
+			if (p instanceof Component) {
+				allParts.addAll(((Component) p).getLocalCircuit().getAllParts());
+			} else {
+				allParts.add(p);
+			}
+		}
+		return allParts;
+	}
 
-    public Collection<Part> getParts()
-    {
-        return parts.values();
-    }
+	@SuppressWarnings("unchecked")
+	public <P extends Part> Collection<P> getParts(Class<P> type) {
+		return (Collection<P>) parts.values().stream().filter(type::isInstance).collect(Collectors.toList());
+	}
 
-    public Collection<Part> getAllParts()
-    {
-        List<Part> allParts = new ArrayList<>();
-        for (Part p : parts.values())
-        {
-            if (p instanceof Component)
-            {
-                allParts.addAll(((Component) p).getLocalCircuit().getAllParts());
-            }
-            else
-            {
-                allParts.add(p);
-            }
-        }
-        return allParts;
-    }
+	@SuppressWarnings("unchecked")
+	public <P extends Part> Collection<P> getAllParts(Class<P> type) {
+		return (Collection<P>) getAllParts().stream().filter(type::isInstance).collect(Collectors.toList());
+	}
 
-    @SuppressWarnings("unchecked")
-    public <P extends Part> Collection<P> getParts(Class<P> type)
-    {
-        return (Collection<P>) parts.values().stream().filter(p -> type.isInstance(p)).collect(Collectors.toList());
-    }
+	public void addMonitor(Monitor monitor) {
+		monitors.add(monitor);
+	}
 
-    @SuppressWarnings("unchecked")
-    public <P extends Part> Collection<P> getAllParts(Class<P> type)
-    {
-        return (Collection<P>) getAllParts().stream().filter(p -> type.isInstance(p)).collect(Collectors.toList());
-    }
+	public Collection<Monitor> getMonitors() {
+		return monitors;
+	}
 
-    public void addMonitor(Monitor monitor)
-    {
-        monitors.add(monitor);
-    }
+	public void simulate() {
+		for (Part part : getParts()) {
+			part.simulate();
+		}
 
-    public Collection<Monitor> getMonitors()
-    {
-        return monitors;
-    }
+		for (Monitor monitor : getMonitors()) {
+			monitor.monitor();
+		}
+	}
 
-    public void simulate()
-    {
-        for (Part part : getParts())
-        {
-            part.simulate();
-        }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (Part part : getParts()) {
+			if (sb.length() > 0) {
+				sb.append(", ");
+			}
 
-        for (Monitor monitor : getMonitors())
-        {
-            monitor.monitor();
-        }
-    }
+			sb.append(part.toString());
+		}
 
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        for (Part part : getParts())
-        {
-            if (sb.length() > 0)
-            {
-                sb.append(", ");
-            }
+		for (Signal signal : getSignals()) {
+			if (sb.length() > 0) {
+				sb.append(", ");
+			}
 
-            sb.append(part.toString());
-        }
+			sb.append(signal.toString());
+		}
 
-        for (Signal signal : getSignals())
-        {
-            if (sb.length() > 0)
-            {
-                sb.append(", ");
-            }
-
-            sb.append(signal.toString());
-        }
-
-        return sb.toString();
-    }
+		return sb.toString();
+	}
 }

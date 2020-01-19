@@ -5,9 +5,8 @@ package de.clijsters.resi.util.console;
  *
  * @author Peter H&auml;nsgen
  */
-public interface Console
-{
-    void println(String line);
+public interface Console {
+	void println(String line);
 
-    void clear();
+	void clear();
 }

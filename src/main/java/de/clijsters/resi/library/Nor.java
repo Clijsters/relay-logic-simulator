@@ -7,93 +7,79 @@ import de.clijsters.resi.common.*;
  *
  * @author Peter H&auml;nsgen
  */
-public class Nor extends Component
-{
-    private final Input powerIn;
+public class Nor extends Component {
+	private final Input powerIn;
+	private final Input[] ins;
+	private final Output _out;
 
-    private final Input[] ins;
+	/**
+	 * The constructor.
+	 *
+	 * @param n number of inputs
+	 */
+	public Nor(Circuit parent, String name, int n) {
+		super(parent, name);
+		powerIn = new Input();
 
-    private final Output _out;
+		ins = new Input[n];
 
-    /**
-     * The constructor.
-     *
-     * @param n number of inputs
-     */
-    public Nor(Circuit parent, String name, int n)
-    {
-        super(parent, name);
+		Circuit local = getLocalCircuit();
 
-        powerIn = new Input();
+		Relay[] relays = new Relay[n];
+		for (int i = 0; i < n; i++) {
+			ins[i] = new Input();
 
-        ins = new Input[n];
+			Relay r = new Relay(local, name + "_R" + i);
+			relays[i] = r;
 
-        Circuit local = getLocalCircuit();
+			// internal wiring
+			new Signal(local).from(ins[i]).to(r.getCoilIn());
 
-        Relay[] relays = new Relay[n];
-        for (int i = 0; i < n; i++)
-        {
-            ins[i] = new Input();
+			if (i == 0) {
+				new Signal(local).from(powerIn).to(r.getMiddleIn(0));
+			} else {
+				new Signal(local).from(relays[i - 1].get_Out(0)).to(r.getMiddleIn(0));
+			}
+		}
 
-            Relay r = new Relay(local, name + "_R" + String.valueOf(i));
-            relays[i] = r;
+		_out = new Output();
 
-            // internal wiring
-            new Signal(local).from(ins[i]).to(r.getCoilIn());
+		new Signal(local).from(relays[n - 1].get_Out(0)).to(_out);
+	}
 
-            if (i == 0)
-            {
-                new Signal(local).from(powerIn).to(r.getMiddleIn(0));
-            }
-            else
-            {
-                new Signal(local).from(relays[i - 1].get_Out(0)).to(r.getMiddleIn(0));
-            }
-        }
+	public Input getPowerIn() {
+		return powerIn;
+	}
 
-        _out = new Output();
+	public Input getIn(int index) {
+		return ins[index];
+	}
 
-        new Signal(local).from(relays[n - 1].get_Out(0)).to(_out);
-    }
+	public Output get_Out() {
+		return _out;
+	}
 
-    public Input getPowerIn()
-    {
-        return powerIn;
-    }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[NOR ");
+		sb.append(getName());
+		sb.append(": ");
 
-    public Input getIn(int index)
-    {
-        return ins[index];
-    }
+		for (int i = 0; i < ins.length; i++) {
+			Input in = ins[i];
 
-    public Output get_Out()
-    {
-        return _out;
-    }
+			sb.append("in");
+			sb.append(i);
+			sb.append("=");
+			sb.append(in);
+			sb.append(", ");
+		}
 
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[NOR ");
-        sb.append(getName());
-        sb.append(": ");
+		sb.append("_out=");
+		sb.append(_out);
+		sb.append("]");
 
-        for (int i = 0; i < ins.length; i++)
-        {
-            Input in = ins[i];
-
-            sb.append("in");
-            sb.append(String.valueOf(i));
-            sb.append("=");
-            sb.append(String.valueOf(in));
-            sb.append(", ");
-        }
-
-        sb.append("_out=");
-        sb.append(String.valueOf(_out));
-        sb.append("]");
-
-        return sb.toString();
-    }
+		return sb.toString();
+	}
 }

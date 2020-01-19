@@ -13,27 +13,24 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Peter H&auml;nsgen
  */
-public class Blinker extends Component
-{
-    private Lamp lamp;
+public class Blinker extends Component {
+	private Lamp lamp;
 
-    /**
-     * The constructor.
-     */
-    public Blinker(Circuit circuit, String name)
-    {
-        super(circuit, name);
+	/**
+	 * The constructor.
+	 */
+	public Blinker(Circuit circuit, String name) {
+		super(circuit, name);
 
-        Circuit local = getLocalCircuit();
+		Circuit local = getLocalCircuit();
 
-        Clock clock = new Clock(local, name + "_Clock", 1, TimeUnit.SECONDS);
-        lamp = new Lamp(local, name + "_Lamp");
+		Clock clock = new Clock(local, name + "_Clock", 1, TimeUnit.SECONDS);
+		lamp = new Lamp(local, name + "_Lamp");
 
-        new Signal(local).from(clock.getOut()).to(lamp.getIn());
-    }
+		new Signal(local).from(clock.getOut()).to(lamp.getIn());
+	}
 
-    public Lamp getLamp()
-    {
-        return lamp;
-    }
+	public Lamp getLamp() {
+		return lamp;
+	}
 }

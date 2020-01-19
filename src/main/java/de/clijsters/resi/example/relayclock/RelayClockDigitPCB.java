@@ -11,93 +11,75 @@ import de.clijsters.resi.library.SevenSegmentDisplay;
  *
  * @author Peter H&auml;nsgen
  */
-public class RelayClockDigitPCB extends Component
-{
-    private SevenSegmentDisplay display;
+public class RelayClockDigitPCB extends Component {
+	private SevenSegmentDisplay display;
+	private Input inA;
+	private Input inB;
+	private Input inC;
+	private Input inD;
+	private Input inE;
+	private Input inF;
+	private Input inG;
 
-    private Input inA;
+	/**
+	 * The constructor.
+	 */
+	public RelayClockDigitPCB(Circuit circuit, String name) {
+		super(circuit, name);
 
-    private Input inB;
+		display = new SevenSegmentDisplay(circuit, name + "_7S");
 
-    private Input inC;
+		inA = new Input();
+		inB = new Input();
+		inC = new Input();
+		inD = new Input();
+		inE = new Input();
+		inF = new Input();
+		inG = new Input();
 
-    private Input inD;
+		new Signal(circuit).from(inA).to(display.getInA());
+		new Signal(circuit).from(inB).to(display.getInB());
+		new Signal(circuit).from(inC).to(display.getInC());
+		new Signal(circuit).from(inD).to(display.getInD());
+		new Signal(circuit).from(inE).to(display.getInE());
+		new Signal(circuit).from(inF).to(display.getInF());
+		new Signal(circuit).from(inG).to(display.getInG());
+	}
 
-    private Input inE;
+	public Input getInA() {
+		return inA;
+	}
 
-    private Input inF;
+	public Input getInB() {
+		return inB;
+	}
 
-    private Input inG;
+	public Input getInC() {
+		return inC;
+	}
 
-    /**
-     * The constructor.
-     */
-    public RelayClockDigitPCB(Circuit circuit, String name)
-    {
-        super(circuit, name);
+	public Input getInD() {
+		return inD;
+	}
 
-        display = new SevenSegmentDisplay(circuit, name + "_7S");
+	public Input getInE() {
+		return inE;
+	}
 
-        inA = new Input();
-        inB = new Input();
-        inC = new Input();
-        inD = new Input();
-        inE = new Input();
-        inF = new Input();
-        inG = new Input();
+	public Input getInF() {
+		return inF;
+	}
 
-        new Signal(circuit).from(inA).to(display.getInA());
-        new Signal(circuit).from(inB).to(display.getInB());
-        new Signal(circuit).from(inC).to(display.getInC());
-        new Signal(circuit).from(inD).to(display.getInD());
-        new Signal(circuit).from(inE).to(display.getInE());
-        new Signal(circuit).from(inF).to(display.getInF());
-        new Signal(circuit).from(inG).to(display.getInG());
-    }
+	public Input getInG() {
+		return inG;
+	}
 
-    public Input getInA()
-    {
-        return inA;
-    }
+	public SevenSegmentDisplay getDisplay() {
+		return display;
+	}
 
-    public Input getInB()
-    {
-        return inB;
-    }
-
-    public Input getInC()
-    {
-        return inC;
-    }
-
-    public Input getInD()
-    {
-        return inD;
-    }
-
-    public Input getInE()
-    {
-        return inE;
-    }
-
-    public Input getInF()
-    {
-        return inF;
-    }
-
-    public Input getInG()
-    {
-        return inG;
-    }
-
-    public SevenSegmentDisplay getDisplay()
-    {
-        return display;
-    }
-
-    @Override
-    public String toString()
-    {
-        return display.toString();
-    }
+	@Override
+	public String toString() {
+		return display.toString();
+	}
 }

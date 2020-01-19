@@ -6,14 +6,11 @@ package de.clijsters.resi.common;
  *
  * @author Peter H&auml;nsgen
  */
-public class Output extends Connector
-{
-    public void setValue(Boolean value)
-    {
-        Signal signal = getSignal();
-        if (signal != null)
-        {
-            signal.setValue(value);
-        }
-    }
+public class Output extends Connector {
+	public void setValue(Boolean value) {
+		Signal signal = getSignal();
+		if (signal != null) {
+			signal.setValue(value);
+		}
+	}
 }

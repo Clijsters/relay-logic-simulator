@@ -6,32 +6,28 @@ package de.clijsters.resi.common;
  *
  * @author Peter H&auml;nsgen
  */
-public abstract class Component extends Part
-{
-    /**
-     * The inner circuit, formed of the parts of the component.
-     */
-    private final Circuit local;
+public abstract class Component extends Part {
+	/**
+	 * The inner circuit, formed of the parts of the component.
+	 */
+	private final Circuit local;
 
-    /**
-     * The constructor.
-     */
-    public Component(Circuit parent, String name)
-    {
-        super(parent, name);
+	/**
+	 * The constructor.
+	 */
+	public Component(Circuit parent, String name) {
+		super(parent, name);
 
-        local = new Circuit();
-    }
+		local = new Circuit();
+	}
 
-    public Circuit getLocalCircuit()
-    {
-        return local;
-    }
+	public Circuit getLocalCircuit() {
+		return local;
+	}
 
-    @Override
-    public void simulate()
-    {
-        // parts are contained by local circuit
-        local.simulate();
-    }
+	@Override
+	public void simulate() {
+		// parts are contained by local circuit
+		local.simulate();
+	}
 }

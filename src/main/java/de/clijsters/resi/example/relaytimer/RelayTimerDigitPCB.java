@@ -11,95 +11,77 @@ import de.clijsters.resi.library.SevenSegmentDisplay;
  *
  * @author Peter H&auml;nsgen
  */
-public class RelayTimerDigitPCB extends Component
-{
-    private final SevenSegmentDisplay display;
+public class RelayTimerDigitPCB extends Component {
+	private final SevenSegmentDisplay display;
+	private final Input inA;
+	private final Input inB;
+	private final Input inC;
+	private final Input inD;
+	private final Input inE;
+	private final Input inF;
+	private final Input inG;
 
-    private final Input inA;
+	/**
+	 * The constructor.
+	 */
+	public RelayTimerDigitPCB(Circuit parent, String name) {
+		super(parent, name);
 
-    private final Input inB;
+		inA = new Input();
+		inB = new Input();
+		inC = new Input();
+		inD = new Input();
+		inE = new Input();
+		inF = new Input();
+		inG = new Input();
 
-    private final Input inC;
+		Circuit local = getLocalCircuit();
 
-    private final Input inD;
+		display = new SevenSegmentDisplay(local, name + "_7S");
 
-    private final Input inE;
+		new Signal(local).from(inA).to(display.getInA());
+		new Signal(local).from(inB).to(display.getInB());
+		new Signal(local).from(inC).to(display.getInC());
+		new Signal(local).from(inD).to(display.getInD());
+		new Signal(local).from(inE).to(display.getInE());
+		new Signal(local).from(inF).to(display.getInF());
+		new Signal(local).from(inG).to(display.getInG());
+	}
 
-    private final Input inF;
+	public Input getInA() {
+		return inA;
+	}
 
-    private final Input inG;
+	public Input getInB() {
+		return inB;
+	}
 
-    /**
-     * The constructor.
-     */
-    public RelayTimerDigitPCB(Circuit parent, String name)
-    {
-        super(parent, name);
+	public Input getInC() {
+		return inC;
+	}
 
-        inA = new Input();
-        inB = new Input();
-        inC = new Input();
-        inD = new Input();
-        inE = new Input();
-        inF = new Input();
-        inG = new Input();
+	public Input getInD() {
+		return inD;
+	}
 
-        Circuit local = getLocalCircuit();
+	public Input getInE() {
+		return inE;
+	}
 
-        display = new SevenSegmentDisplay(local, name + "_7S");
+	public Input getInF() {
+		return inF;
+	}
 
-        new Signal(local).from(inA).to(display.getInA());
-        new Signal(local).from(inB).to(display.getInB());
-        new Signal(local).from(inC).to(display.getInC());
-        new Signal(local).from(inD).to(display.getInD());
-        new Signal(local).from(inE).to(display.getInE());
-        new Signal(local).from(inF).to(display.getInF());
-        new Signal(local).from(inG).to(display.getInG());
-    }
+	public Input getInG() {
+		return inG;
+	}
 
-    public Input getInA()
-    {
-        return inA;
-    }
+	public SevenSegmentDisplay getDisplay() {
+		return display;
+	}
 
-    public Input getInB()
-    {
-        return inB;
-    }
-
-    public Input getInC()
-    {
-        return inC;
-    }
-
-    public Input getInD()
-    {
-        return inD;
-    }
-
-    public Input getInE()
-    {
-        return inE;
-    }
-
-    public Input getInF()
-    {
-        return inF;
-    }
-
-    public Input getInG()
-    {
-        return inG;
-    }
-
-    public SevenSegmentDisplay getDisplay()
-    {
-        return display;
-    }
-
-    @Override
-    public String toString()
-    {
-        return display.toString();
-    }
+	@Override
+	public String toString() {
+		return display.toString();
+	}
 }

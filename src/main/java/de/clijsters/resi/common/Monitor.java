@@ -6,7 +6,6 @@ package de.clijsters.resi.common;
  *
  * @author Peter H&auml;nsgen
  */
-public interface Monitor
-{
-    void monitor();
+public interface Monitor {
+	void monitor();
 }

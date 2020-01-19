@@ -5,16 +5,13 @@ package de.clijsters.resi.util.console;
  *
  * @author Peter H&auml;nsgen
  */
-public class SystemConsole implements Console
-{
-    @Override
-    public void println(String line)
-    {
-        System.out.println(line);
-    }
+public class SystemConsole implements Console {
+	@Override
+	public void println(String line) {
+		System.out.println(line);
+	}
 
-    @Override
-    public void clear()
-    {
-    }
+	@Override
+	public void clear() {
+	}
 }

@@ -6,28 +6,23 @@ package de.clijsters.resi.common;
  *
  * @author Peter H&auml;nsgen
  */
-public abstract class Connector
-{
-    private Signal signal;
+public abstract class Connector {
+	private Signal signal;
 
-    public void setSignal(Signal signal)
-    {
-        if ((this.signal != null) && (this.signal != signal))
-        {
-            throw new SimulatorException("Signal is already connected.");
-        }
+	public Signal getSignal() {
+		return signal;
+	}
 
-        this.signal = signal;
-    }
+	public void setSignal(Signal signal) {
+		if ((this.signal != null) && (this.signal != signal)) {
+			throw new SimulatorException("Signal is already connected.");
+		}
 
-    public Signal getSignal()
-    {
-        return signal;
-    }
+		this.signal = signal;
+	}
 
-    @Override
-    public String toString()
-    {
-        return String.valueOf(signal);
-    }
+	@Override
+	public String toString() {
+		return String.valueOf(signal);
+	}
 }

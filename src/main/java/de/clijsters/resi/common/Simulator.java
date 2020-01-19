@@ -5,72 +5,56 @@ package de.clijsters.resi.common;
  *
  * @author Peter H&auml;nsgen
  */
-public class Simulator
-{
-    private final long delay;
+public class Simulator {
+	private final long delay;
+	private SimulatorThread workerThread;
+	private Circuit circuit;
 
-    private SimulatorThread workerThread;
+	/**
+	 * The constructor.
+	 */
+	public Simulator(Circuit circuit, long delay) {
+		this.circuit = circuit;
+		this.delay = delay;
+	}
 
-    private Circuit circuit;
+	public void start() {
+		if (workerThread == null) {
+			workerThread = new SimulatorThread();
+			workerThread.start();
+		}
+	}
 
-    /**
-     * The constructor.
-     */
-    public Simulator(Circuit circuit, long delay)
-    {
-        this.circuit = circuit;
-        this.delay = delay;
-    }
+	public void stop() {
+		if (workerThread != null) {
+			workerThread.terminate();
+			workerThread = null;
+		}
+	}
 
-    public void start()
-    {
-        if (workerThread == null)
-        {
-            workerThread = new SimulatorThread();
-            workerThread.start();
-        }
-    }
+	class SimulatorThread extends Thread {
+		private volatile boolean stop;
 
-    public void stop()
-    {
-        if (workerThread != null)
-        {
-            workerThread.terminate();
-            workerThread = null;
-        }
-    }
+		@Override
+		public void run() {
+			while (!stop) {
+				circuit.simulate();
 
-    class SimulatorThread extends Thread
-    {
-        private volatile boolean stop;
+				try {
+					Thread.sleep(delay);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 
-        @Override
-        public void run()
-        {
-            while (!stop)
-            {
-                circuit.simulate();
-
-                try
-                {
-                    Thread.sleep(delay);
-                }
-                catch (InterruptedException e)
-                {
-                }
-            }
-        }
-
-        public void terminate()
-        {
-            stop = true;
-            try
-            {
-                join();
-            }
-            catch (InterruptedException e)
-            {
-            }
-        }
-    }
+		public void terminate() {
+			stop = true;
+			try {
+				join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

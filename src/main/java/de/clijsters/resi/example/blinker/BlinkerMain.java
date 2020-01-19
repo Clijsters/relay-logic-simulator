@@ -13,28 +13,26 @@ import de.clijsters.resi.util.logicanalyzer.LogicAnalyzerFrame;
  *
  * @author Peter H&auml;nsgen
  */
-public class BlinkerMain
-{
-    public static void main(String[] args)
-    {
-        Circuit circuit = new Circuit();
+public class BlinkerMain {
+	public static void main(String[] args) {
+		Circuit circuit = new Circuit();
 
-        Blinker blinker = new Blinker(circuit, "Blinker");
+		Blinker blinker = new Blinker(circuit, "Blinker");
 
-        circuit.addMonitor(new PartConsoleMonitor(blinker.getLamp(), new SystemConsole()));
+		circuit.addMonitor(new PartConsoleMonitor(blinker.getLamp(), new SystemConsole()));
 
-        Simulator sim = new Simulator(circuit, 10);
+		Simulator sim = new Simulator(circuit, 10);
 
-        LogicAnalyzer logicAnalyzer = new LogicAnalyzer(500);
-        circuit.addMonitor(logicAnalyzer);
+		LogicAnalyzer logicAnalyzer = new LogicAnalyzer(500);
+		circuit.addMonitor(logicAnalyzer);
 
-        Signal out = blinker.getLamp().getIn().getSignal();
-        LogicAnalyzer.Track t = logicAnalyzer.addTrack(out);
-        t.setLabel("Lamp");
+		Signal out = blinker.getLamp().getIn().getSignal();
+		LogicAnalyzer.Track t = logicAnalyzer.addTrack(out);
+		t.setLabel("Lamp");
 
-        LogicAnalyzerFrame logicAnalyzerFrame = new LogicAnalyzerFrame(sim, logicAnalyzer);
-        circuit.addMonitor(logicAnalyzerFrame);
+		LogicAnalyzerFrame logicAnalyzerFrame = new LogicAnalyzerFrame(sim, logicAnalyzer);
+		circuit.addMonitor(logicAnalyzerFrame);
 
-        sim.start();
-    }
+		sim.start();
+	}
 }

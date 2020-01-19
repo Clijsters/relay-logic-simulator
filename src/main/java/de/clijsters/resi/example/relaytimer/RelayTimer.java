@@ -10,281 +10,261 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Peter H&auml;nsgen
  */
-public class RelayTimer extends Component
-{
-    private final Input powerIn;
+public class RelayTimer extends Component {
+	private final Input powerIn;
+	private final RelayTimerDigitPCB digitS0;
+	private final RelayTimerDigitPCB digitS1;
+	private final RelayTimerDigitPCB digitM0;
+	private final RelayTimerDigitPCB digitM1;
+	private final Switch setM0Switch;
+	private final Switch setM1Switch;
+	private final Switch startSwitch;
+	private final Switch resetSwitch;
 
-    private final RelayTimerDigitPCB digitS0;
+	/**
+	 * The constructor.
+	 */
+	public RelayTimer(Circuit parent, String name) {
+		super(parent, name);
+		powerIn = new Input();
 
-    private final RelayTimerDigitPCB digitS1;
+		Circuit local = getLocalCircuit();
 
-    private final RelayTimerDigitPCB digitM0;
+		Clock clock = new Clock(local, name + "Clock", 500, TimeUnit.MILLISECONDS);
 
-    private final RelayTimerDigitPCB digitM1;
+		Counter16 counterS0 = new Counter16(local, name + "_CounterS0");
+		Counter8 counterS1 = new Counter8(local, name + "_CounterS1");
+		Counter16 counterM0 = new Counter16(local, name + "_CounterM0");
+		Counter8 counterM1 = new Counter8(local, name + "_CounterM1");
 
-    private final Switch setM0Switch;
+		BCDDecoder10 bcdS0 = new BCDDecoder10(local, name + "_BCDS0");
+		BCDDecoder10 bcdS1 = new BCDDecoder10(local, name + "_BCDS1");
+		BCDDecoder10 bcdM0 = new BCDDecoder10(local, name + "_BCDM0");
+		BCDDecoder10 bcdM1 = new BCDDecoder10(local, name + "_BCDM1");
 
-    private final Switch setM1Switch;
+		RelayTimerDecoder10PCB decoderS0 = new RelayTimerDecoder10PCB(local, name + "_DecoderS0");
+		RelayTimerDecoder6PCB decoderS1 = new RelayTimerDecoder6PCB(local, name + "_DecoderS1");
+		RelayTimerDecoder10PCB decoderM0 = new RelayTimerDecoder10PCB(local, name + "_DecoderM0");
+		RelayTimerDecoder6PCB decoderM1 = new RelayTimerDecoder6PCB(local, name + "_DecoderM1");
 
-    private final Switch startSwitch;
+		digitS0 = new RelayTimerDigitPCB(local, name + "_DigitS0");
+		digitS1 = new RelayTimerDigitPCB(local, name + "_DigitS1");
+		digitM0 = new RelayTimerDigitPCB(local, name + "_DigitM0");
+		digitM1 = new RelayTimerDigitPCB(local, name + "_DigitM1");
 
-    private final Switch resetSwitch;
+		setM0Switch = new Switch(local, name + "_SetM0Switch");
+		setM1Switch = new Switch(local, name + "_SetM1Switch");
+		startSwitch = new Switch(local, name + "_StartSwitch");
+		resetSwitch = new Switch(local, name + "_ResetSwitch");
 
-    /**
-     * The constructor.
-     */
-    public RelayTimer(Circuit parent, String name)
-    {
-        super(parent, name);
+		Relay resetS0 = new Relay(local, name + "_ResetS0");
+		Relay resetS1 = new Relay(local, name + "_ResetS1");
+		Relay resetM0 = new Relay(local, name + "_ResetM0");
+		Relay resetM1 = new Relay(local, name + "_ResetM1");
+		Relay reset = new Relay(local, name + "_Reset");
 
-        powerIn = new Input();
+		Relay clockS0 = new Relay(local, name + "_ClockS0");
+		Relay clockM0 = new Relay(local, name + "_ClockM0");
+		Relay clockM1 = new Relay(local, name + "_ClockM1");
 
-        Circuit local = getLocalCircuit();
+		Joint jointM0 = new Joint(local, name + "_JointM0");
+		Joint jointM1 = new Joint(local, name + "_JointM1");
 
-        Clock clock = new Clock(local, name + "Clock", 500, TimeUnit.MILLISECONDS);
+		FlipFlop startStop = new FlipFlop(local, name + "_StartStop");
 
-        Counter16 counterS0 = new Counter16(local, name + "_CounterS0");
-        Counter8 counterS1 = new Counter8(local, name + "_CounterS1");
-        Counter16 counterM0 = new Counter16(local, name + "_CounterM0");
-        Counter8 counterM1 = new Counter8(local, name + "_CounterM1");
+		Bell bell = new Bell(local, name + "_Bell");
+		And alarm = new And(local, name + "_Alarm", 5);
+		And preAlarm = new And(local, name + "_PreAlarm", 5);
+		Joint jointBell = new Joint(local, name + "_JointBell");
 
-        BCDDecoder10 bcdS0 = new BCDDecoder10(local, name + "_BCDS0");
-        BCDDecoder10 bcdS1 = new BCDDecoder10(local, name + "_BCDS1");
-        BCDDecoder10 bcdM0 = new BCDDecoder10(local, name + "_BCDM0");
-        BCDDecoder10 bcdM1 = new BCDDecoder10(local, name + "_BCDM1");
+		// TODO alarm when 00 and seconds1=5 (for 10 seconds alarm)
+		// TODO stop clock after alarm
+		// TODO pre alarm 5 minutes (optionally: configurable with jumper or programming switch)
+		// TODO start button only if not stopped
+		// TODO if stopped only reset button helps
+		// TODO reset resets counter to 59, enables start button, switches off clock
+		// TODO restructure to meet final PCB layout and move parts
+		// TODO monitor seconds via console / debug window, not with 7-segment-display
 
-        RelayTimerDecoder10PCB decoderS0 = new RelayTimerDecoder10PCB(local, name + "_DecoderS0");
-        RelayTimerDecoder6PCB decoderS1 = new RelayTimerDecoder6PCB(local, name + "_DecoderS1");
-        RelayTimerDecoder10PCB decoderM0 = new RelayTimerDecoder10PCB(local, name + "_DecoderM0");
-        RelayTimerDecoder6PCB decoderM1 = new RelayTimerDecoder6PCB(local, name + "_DecoderM1");
+		// internal wirings
+		// connect power
+		new Signal(local).from(powerIn).to(resetS0.getMiddleIn(1), resetS1.getMiddleIn(1), resetM0.getMiddleIn(1),
+				resetM1.getMiddleIn(1), bcdS0.getPowerIn(), bcdS1.getPowerIn(), bcdM0.getPowerIn(), bcdM1.getPowerIn(),
+				decoderS0.getPowerIn(), decoderS1.getPowerIn(), decoderM0.getPowerIn(), decoderM1.getPowerIn(),
+				setM0Switch.getMiddleIn(), setM1Switch.getMiddleIn(), startSwitch.getMiddleIn(), resetSwitch.getMiddleIn(),
+				clockM0.getMiddleIn(0), clockM1.getMiddleIn(0), startStop.getPowerIn(), alarm.getPowerIn(),
+				preAlarm.getPowerIn(), reset.getMiddleIn(0));
 
-        digitS0 = new RelayTimerDigitPCB(local, name + "_DigitS0");
-        digitS1 = new RelayTimerDigitPCB(local, name + "_DigitS1");
-        digitM0 = new RelayTimerDigitPCB(local, name + "_DigitM0");
-        digitM1 = new RelayTimerDigitPCB(local, name + "_DigitM1");
+		new Signal(local).from(resetS0.get_Out(0)).to(counterS0.getPowerIn());
+		new Signal(local).from(resetS1.get_Out(0)).to(counterS1.getPowerIn());
+		new Signal(local).from(resetM0.get_Out(0)).to(counterM0.getPowerIn());
+		new Signal(local).from(resetM1.get_Out(0)).to(counterM1.getPowerIn());
 
-        setM0Switch = new Switch(local, name + "_SetM0Switch");
-        setM1Switch = new Switch(local, name + "_SetM1Switch");
-        startSwitch = new Switch(local, name + "_StartSwitch");
-        resetSwitch = new Switch(local, name + "_ResetSwitch");
+		new Signal(local).from(resetSwitch.getOut()).to(reset.getCoilIn());
+		new Signal(local).from(reset.get_Out(0)).to(resetS0.getMiddleIn(0), resetS1.getMiddleIn(0),
+				resetM0.getMiddleIn(0), resetM1.getMiddleIn(0));
 
-        Relay resetS0 = new Relay(local, name + "_ResetS0");
-        Relay resetS1 = new Relay(local, name + "_ResetS1");
-        Relay resetM0 = new Relay(local, name + "_ResetM0");
-        Relay resetM1 = new Relay(local, name + "_ResetM1");
-        Relay reset = new Relay(local, name + "_Reset");
+		new Signal(local).from(alarm.getOut()).to(jointBell.getIn(0));
+		new Signal(local).from(preAlarm.getOut()).to(jointBell.getIn(1));
+		new Signal(local).from(jointBell.getOut()).to(bell.getIn());
 
-        Relay clockS0 = new Relay(local, name + "_ClockS0");
-        Relay clockM0 = new Relay(local, name + "_ClockM0");
-        Relay clockM1 = new Relay(local, name + "_ClockM1");
+		// connect start switch with clock generator
+		new Signal(local).from(startSwitch.get_Out()).to(startStop.get_Clock());
+		new Signal(local).from(startSwitch.getOut()).to(startStop.getClock());
+		new Signal(local).from(startStop.getOut()).to(clockS0.getCoilIn(), alarm.getIn(4), preAlarm.getIn(4));
+		new Signal(local).from(clock.get_Out()).to(clockS0.getMiddleIn(0));
+		new Signal(local).from(clock.getOut()).to(clockS0.getMiddleIn(1));
+		new Signal(local).from(clockS0.getOut(0)).to(counterS0.get_Clock());
+		new Signal(local).from(clockS0.getOut(1)).to(counterS0.getClock());
 
-        Joint jointM0 = new Joint(local, name + "_JointM0");
-        Joint jointM1 = new Joint(local, name + "_JointM1");
+		// connect clock and overflows with counters
+		// new Signal(local).from(clock.get_Out()).to(counterS0.get_Clock());
+		// new Signal(local).from(clock.getOut()).to(counterS0.getClock());
+		new Signal(local).from(resetS0.get_Out(1)).to(counterS1.get_Clock());
+		new Signal(local).from(resetS0.getOut(1)).to(counterS1.getClock());
+		new Signal(local).from(resetS1.getOut(1)).to(jointM0.getIn(0));
+		new Signal(local).from(resetM0.getOut(1)).to(jointM1.getIn(0));
+		// TODO new Signal(local).from(resetM1.getOut(1)).to(globalStop);
 
-        FlipFlop startStop = new FlipFlop(local, name + "_StartStop");
+		new Signal(local).from(setM0Switch.getOut()).to(jointM0.getIn(1));
+		new Signal(local).from(jointM0.getOut()).to(clockM0.getCoilIn());
+		new Signal(local).from(clockM0.get_Out(0)).to(counterM0.get_Clock());
+		new Signal(local).from(clockM0.getOut(0)).to(counterM0.getClock());
 
-        Bell bell = new Bell(local, name + "_Bell");
-        And alarm = new And(local, name + "_Alarm", 5);
-        And preAlarm = new And(local, name + "_PreAlarm", 5);
-        Joint jointBell = new Joint(local, name + "_JointBell");
+		new Signal(local).from(setM1Switch.getOut()).to(jointM1.getIn(1));
+		new Signal(local).from(jointM1.getOut()).to(clockM1.getCoilIn());
+		new Signal(local).from(clockM1.get_Out(0)).to(counterM1.get_Clock());
+		new Signal(local).from(clockM1.getOut(0)).to(counterM1.getClock());
 
-        // TODO alarm when 00 and seconds1=5 (for 10 seconds alarm)
-        // TODO stop clock after alarm
-        // TODO pre alarm 5 minutes (optionally: configurable with jumper or programming switch)
-        // TODO start button only if not stopped
-        // TODO if stopped only reset button helps
-        // TODO reset resets counter to 59, enables start button, switches off clock
-        // TODO restructure to meet final PCB layout and move parts
-        // TODO monitor seconds via console / debug window, not with 7-segment-display
+		// decimal decoders
+		new Signal(local).from(counterS0.get_Out0()).to(alarm.getIn(0));
+		new Signal(local).from(counterS0.getOut0()).to(bcdS0.getIn0());
+		new Signal(local).from(counterS0.getOut1()).to(bcdS0.getIn1());
+		new Signal(local).from(counterS0.getOut2()).to(bcdS0.getIn2());
+		new Signal(local).from(counterS0.getOut3()).to(bcdS0.getIn3());
 
-        // internal wirings
-        // connect power
-        new Signal(local).from(powerIn).to(resetS0.getMiddleIn(1), resetS1.getMiddleIn(1), resetM0.getMiddleIn(1),
-            resetM1.getMiddleIn(1), bcdS0.getPowerIn(), bcdS1.getPowerIn(), bcdM0.getPowerIn(), bcdM1.getPowerIn(),
-            decoderS0.getPowerIn(), decoderS1.getPowerIn(), decoderM0.getPowerIn(), decoderM1.getPowerIn(),
-            setM0Switch.getMiddleIn(), setM1Switch.getMiddleIn(), startSwitch.getMiddleIn(), resetSwitch.getMiddleIn(),
-            clockM0.getMiddleIn(0), clockM1.getMiddleIn(0), startStop.getPowerIn(), alarm.getPowerIn(),
-            preAlarm.getPowerIn(), reset.getMiddleIn(0));
+		new Signal(local).from(counterS1.getOut0()).to(bcdS1.getIn0());
+		new Signal(local).from(counterS1.getOut1()).to(bcdS1.getIn1());
+		new Signal(local).from(counterS1.getOut2()).to(bcdS1.getIn2());
 
-        new Signal(local).from(resetS0.get_Out(0)).to(counterS0.getPowerIn());
-        new Signal(local).from(resetS1.get_Out(0)).to(counterS1.getPowerIn());
-        new Signal(local).from(resetM0.get_Out(0)).to(counterM0.getPowerIn());
-        new Signal(local).from(resetM1.get_Out(0)).to(counterM1.getPowerIn());
+		new Signal(local).from(counterM0.getOut0()).to(bcdM0.getIn0());
+		new Signal(local).from(counterM0.getOut1()).to(bcdM0.getIn1());
+		new Signal(local).from(counterM0.getOut2()).to(bcdM0.getIn2());
+		new Signal(local).from(counterM0.getOut3()).to(bcdM0.getIn3());
 
-        new Signal(local).from(resetSwitch.getOut()).to(reset.getCoilIn());
-        new Signal(local).from(reset.get_Out(0)).to(resetS0.getMiddleIn(0), resetS1.getMiddleIn(0),
-            resetM0.getMiddleIn(0), resetM1.getMiddleIn(0));
+		new Signal(local).from(counterM1.getOut0()).to(bcdM1.getIn0());
+		new Signal(local).from(counterM1.getOut1()).to(bcdM1.getIn1());
+		new Signal(local).from(counterM1.getOut2()).to(bcdM1.getIn2());
 
-        new Signal(local).from(alarm.getOut()).to(jointBell.getIn(0));
-        new Signal(local).from(preAlarm.getOut()).to(jointBell.getIn(1));
-        new Signal(local).from(jointBell.getOut()).to(bell.getIn());
+		// connect decimal decoders with 7-segment decoders
+		// connect crosswise for counting down
+		new Signal(local).from(bcdS0.getOut0()).to(decoderS0.getIn9(), preAlarm.getIn(0));
+		new Signal(local).from(bcdS0.getOut1()).to(decoderS0.getIn8());
+		new Signal(local).from(bcdS0.getOut2()).to(decoderS0.getIn7());
+		new Signal(local).from(bcdS0.getOut3()).to(decoderS0.getIn6());
+		new Signal(local).from(bcdS0.getOut4()).to(decoderS0.getIn5());
+		new Signal(local).from(bcdS0.getOut5()).to(decoderS0.getIn4());
+		new Signal(local).from(bcdS0.getOut6()).to(decoderS0.getIn3());
+		new Signal(local).from(bcdS0.getOut7()).to(decoderS0.getIn2());
+		new Signal(local).from(bcdS0.getOut8()).to(decoderS0.getIn1());
+		new Signal(local).from(bcdS0.getOut9()).to(decoderS0.getIn0());
+		new Signal(local).from(bcdS0.getOutA()).to(resetS0.getCoilIn());
 
-        // connect start switch with clock generator
-        new Signal(local).from(startSwitch.get_Out()).to(startStop.get_Clock());
-        new Signal(local).from(startSwitch.getOut()).to(startStop.getClock());
-        new Signal(local).from(startStop.getOut()).to(clockS0.getCoilIn(), alarm.getIn(4), preAlarm.getIn(4));
-        new Signal(local).from(clock.get_Out()).to(clockS0.getMiddleIn(0));
-        new Signal(local).from(clock.getOut()).to(clockS0.getMiddleIn(1));
-        new Signal(local).from(clockS0.getOut(0)).to(counterS0.get_Clock());
-        new Signal(local).from(clockS0.getOut(1)).to(counterS0.getClock());
+		new Signal(local).from(bcdS1.getOut0()).to(decoderS1.getIn5(), alarm.getIn(1), preAlarm.getIn(1));
+		new Signal(local).from(bcdS1.getOut1()).to(decoderS1.getIn4());
+		new Signal(local).from(bcdS1.getOut2()).to(decoderS1.getIn3());
+		new Signal(local).from(bcdS1.getOut3()).to(decoderS1.getIn2());
+		new Signal(local).from(bcdS1.getOut4()).to(decoderS1.getIn1());
+		new Signal(local).from(bcdS1.getOut5()).to(decoderS1.getIn0());
+		new Signal(local).from(bcdS1.getOut6()).to(resetS1.getCoilIn());
 
-        // connect clock and overflows with counters
-        // new Signal(local).from(clock.get_Out()).to(counterS0.get_Clock());
-        // new Signal(local).from(clock.getOut()).to(counterS0.getClock());
-        new Signal(local).from(resetS0.get_Out(1)).to(counterS1.get_Clock());
-        new Signal(local).from(resetS0.getOut(1)).to(counterS1.getClock());
-        new Signal(local).from(resetS1.getOut(1)).to(jointM0.getIn(0));
-        new Signal(local).from(resetM0.getOut(1)).to(jointM1.getIn(0));
-        // TODO new Signal(local).from(resetM1.getOut(1)).to(globalStop);
+		new Signal(local).from(bcdM0.getOut0()).to(decoderM0.getIn9());
+		new Signal(local).from(bcdM0.getOut1()).to(decoderM0.getIn8());
+		new Signal(local).from(bcdM0.getOut2()).to(decoderM0.getIn7());
+		new Signal(local).from(bcdM0.getOut3()).to(decoderM0.getIn6());
+		new Signal(local).from(bcdM0.getOut4()).to(decoderM0.getIn5());
+		new Signal(local).from(bcdM0.getOut5()).to(decoderM0.getIn4());
+		new Signal(local).from(bcdM0.getOut6()).to(decoderM0.getIn3());
+		new Signal(local).from(bcdM0.getOut7()).to(decoderM0.getIn2());
+		new Signal(local).from(bcdM0.getOut8()).to(decoderM0.getIn1(), preAlarm.getIn(2));
+		new Signal(local).from(bcdM0.getOut9()).to(decoderM0.getIn0(), alarm.getIn(2));
+		new Signal(local).from(bcdM0.getOutA()).to(resetM0.getCoilIn());
 
-        new Signal(local).from(setM0Switch.getOut()).to(jointM0.getIn(1));
-        new Signal(local).from(jointM0.getOut()).to(clockM0.getCoilIn());
-        new Signal(local).from(clockM0.get_Out(0)).to(counterM0.get_Clock());
-        new Signal(local).from(clockM0.getOut(0)).to(counterM0.getClock());
+		new Signal(local).from(bcdM1.getOut0()).to(decoderM1.getIn5());
+		new Signal(local).from(bcdM1.getOut1()).to(decoderM1.getIn4());
+		new Signal(local).from(bcdM1.getOut2()).to(decoderM1.getIn3());
+		new Signal(local).from(bcdM1.getOut3()).to(decoderM1.getIn2());
+		new Signal(local).from(bcdM1.getOut4()).to(decoderM1.getIn1());
+		new Signal(local).from(bcdM1.getOut5()).to(decoderM1.getIn0(), alarm.getIn(3), preAlarm.getIn(3));
+		new Signal(local).from(bcdM1.getOut6()).to(resetM1.getCoilIn());
 
-        new Signal(local).from(setM1Switch.getOut()).to(jointM1.getIn(1));
-        new Signal(local).from(jointM1.getOut()).to(clockM1.getCoilIn());
-        new Signal(local).from(clockM1.get_Out(0)).to(counterM1.get_Clock());
-        new Signal(local).from(clockM1.getOut(0)).to(counterM1.getClock());
+		// connect decoders with display
+		new Signal(local).from(decoderS0.getOutA()).to(digitS0.getInA());
+		new Signal(local).from(decoderS0.getOutB()).to(digitS0.getInB());
+		new Signal(local).from(decoderS0.getOutC()).to(digitS0.getInC());
+		new Signal(local).from(decoderS0.getOutD()).to(digitS0.getInD());
+		new Signal(local).from(decoderS0.getOutE()).to(digitS0.getInE());
+		new Signal(local).from(decoderS0.getOutF()).to(digitS0.getInF());
+		new Signal(local).from(decoderS0.getOutG()).to(digitS0.getInG());
 
-        // decimal decoders
-        new Signal(local).from(counterS0.get_Out0()).to(alarm.getIn(0));
-        new Signal(local).from(counterS0.getOut0()).to(bcdS0.getIn0());
-        new Signal(local).from(counterS0.getOut1()).to(bcdS0.getIn1());
-        new Signal(local).from(counterS0.getOut2()).to(bcdS0.getIn2());
-        new Signal(local).from(counterS0.getOut3()).to(bcdS0.getIn3());
+		new Signal(local).from(decoderS1.getOutA()).to(digitS1.getInA());
+		new Signal(local).from(decoderS1.getOutB()).to(digitS1.getInB());
+		new Signal(local).from(decoderS1.getOutC()).to(digitS1.getInC());
+		new Signal(local).from(decoderS1.getOutD()).to(digitS1.getInD());
+		new Signal(local).from(decoderS1.getOutE()).to(digitS1.getInE());
+		new Signal(local).from(decoderS1.getOutF()).to(digitS1.getInF());
+		new Signal(local).from(decoderS1.getOutG()).to(digitS1.getInG());
 
-        new Signal(local).from(counterS1.getOut0()).to(bcdS1.getIn0());
-        new Signal(local).from(counterS1.getOut1()).to(bcdS1.getIn1());
-        new Signal(local).from(counterS1.getOut2()).to(bcdS1.getIn2());
+		new Signal(local).from(decoderM0.getOutA()).to(digitM0.getInA());
+		new Signal(local).from(decoderM0.getOutB()).to(digitM0.getInB());
+		new Signal(local).from(decoderM0.getOutC()).to(digitM0.getInC());
+		new Signal(local).from(decoderM0.getOutD()).to(digitM0.getInD());
+		new Signal(local).from(decoderM0.getOutE()).to(digitM0.getInE());
+		new Signal(local).from(decoderM0.getOutF()).to(digitM0.getInF());
+		new Signal(local).from(decoderM0.getOutG()).to(digitM0.getInG());
 
-        new Signal(local).from(counterM0.getOut0()).to(bcdM0.getIn0());
-        new Signal(local).from(counterM0.getOut1()).to(bcdM0.getIn1());
-        new Signal(local).from(counterM0.getOut2()).to(bcdM0.getIn2());
-        new Signal(local).from(counterM0.getOut3()).to(bcdM0.getIn3());
+		new Signal(local).from(decoderM1.getOutA()).to(digitM1.getInA());
+		new Signal(local).from(decoderM1.getOutB()).to(digitM1.getInB());
+		new Signal(local).from(decoderM1.getOutC()).to(digitM1.getInC());
+		new Signal(local).from(decoderM1.getOutD()).to(digitM1.getInD());
+		new Signal(local).from(decoderM1.getOutE()).to(digitM1.getInE());
+		new Signal(local).from(decoderM1.getOutF()).to(digitM1.getInF());
+		new Signal(local).from(decoderM1.getOutG()).to(digitM1.getInG());
+	}
 
-        new Signal(local).from(counterM1.getOut0()).to(bcdM1.getIn0());
-        new Signal(local).from(counterM1.getOut1()).to(bcdM1.getIn1());
-        new Signal(local).from(counterM1.getOut2()).to(bcdM1.getIn2());
+	public Input getPowerIn() {
+		return powerIn;
+	}
 
-        // connect decimal decoders with 7-segment decoders
-        // connect crosswise for counting down
-        new Signal(local).from(bcdS0.getOut0()).to(decoderS0.getIn9(), preAlarm.getIn(0));
-        new Signal(local).from(bcdS0.getOut1()).to(decoderS0.getIn8());
-        new Signal(local).from(bcdS0.getOut2()).to(decoderS0.getIn7());
-        new Signal(local).from(bcdS0.getOut3()).to(decoderS0.getIn6());
-        new Signal(local).from(bcdS0.getOut4()).to(decoderS0.getIn5());
-        new Signal(local).from(bcdS0.getOut5()).to(decoderS0.getIn4());
-        new Signal(local).from(bcdS0.getOut6()).to(decoderS0.getIn3());
-        new Signal(local).from(bcdS0.getOut7()).to(decoderS0.getIn2());
-        new Signal(local).from(bcdS0.getOut8()).to(decoderS0.getIn1());
-        new Signal(local).from(bcdS0.getOut9()).to(decoderS0.getIn0());
-        new Signal(local).from(bcdS0.getOutA()).to(resetS0.getCoilIn());
+	public RelayTimerDigitPCB getDisplayS0() {
+		return digitS0;
+	}
 
-        new Signal(local).from(bcdS1.getOut0()).to(decoderS1.getIn5(), alarm.getIn(1), preAlarm.getIn(1));
-        new Signal(local).from(bcdS1.getOut1()).to(decoderS1.getIn4());
-        new Signal(local).from(bcdS1.getOut2()).to(decoderS1.getIn3());
-        new Signal(local).from(bcdS1.getOut3()).to(decoderS1.getIn2());
-        new Signal(local).from(bcdS1.getOut4()).to(decoderS1.getIn1());
-        new Signal(local).from(bcdS1.getOut5()).to(decoderS1.getIn0());
-        new Signal(local).from(bcdS1.getOut6()).to(resetS1.getCoilIn());
+	public RelayTimerDigitPCB getDisplayS1() {
+		return digitS1;
+	}
 
-        new Signal(local).from(bcdM0.getOut0()).to(decoderM0.getIn9());
-        new Signal(local).from(bcdM0.getOut1()).to(decoderM0.getIn8());
-        new Signal(local).from(bcdM0.getOut2()).to(decoderM0.getIn7());
-        new Signal(local).from(bcdM0.getOut3()).to(decoderM0.getIn6());
-        new Signal(local).from(bcdM0.getOut4()).to(decoderM0.getIn5());
-        new Signal(local).from(bcdM0.getOut5()).to(decoderM0.getIn4());
-        new Signal(local).from(bcdM0.getOut6()).to(decoderM0.getIn3());
-        new Signal(local).from(bcdM0.getOut7()).to(decoderM0.getIn2());
-        new Signal(local).from(bcdM0.getOut8()).to(decoderM0.getIn1(), preAlarm.getIn(2));
-        new Signal(local).from(bcdM0.getOut9()).to(decoderM0.getIn0(), alarm.getIn(2));
-        new Signal(local).from(bcdM0.getOutA()).to(resetM0.getCoilIn());
+	public RelayTimerDigitPCB getDisplayM0() {
+		return digitM0;
+	}
 
-        new Signal(local).from(bcdM1.getOut0()).to(decoderM1.getIn5());
-        new Signal(local).from(bcdM1.getOut1()).to(decoderM1.getIn4());
-        new Signal(local).from(bcdM1.getOut2()).to(decoderM1.getIn3());
-        new Signal(local).from(bcdM1.getOut3()).to(decoderM1.getIn2());
-        new Signal(local).from(bcdM1.getOut4()).to(decoderM1.getIn1());
-        new Signal(local).from(bcdM1.getOut5()).to(decoderM1.getIn0(), alarm.getIn(3), preAlarm.getIn(3));
-        new Signal(local).from(bcdM1.getOut6()).to(resetM1.getCoilIn());
+	public RelayTimerDigitPCB getDisplayM1() {
+		return digitM1;
+	}
 
-        // connect decoders with display
-        new Signal(local).from(decoderS0.getOutA()).to(digitS0.getInA());
-        new Signal(local).from(decoderS0.getOutB()).to(digitS0.getInB());
-        new Signal(local).from(decoderS0.getOutC()).to(digitS0.getInC());
-        new Signal(local).from(decoderS0.getOutD()).to(digitS0.getInD());
-        new Signal(local).from(decoderS0.getOutE()).to(digitS0.getInE());
-        new Signal(local).from(decoderS0.getOutF()).to(digitS0.getInF());
-        new Signal(local).from(decoderS0.getOutG()).to(digitS0.getInG());
+	public Switch getM0Switch() {
+		return setM0Switch;
+	}
 
-        new Signal(local).from(decoderS1.getOutA()).to(digitS1.getInA());
-        new Signal(local).from(decoderS1.getOutB()).to(digitS1.getInB());
-        new Signal(local).from(decoderS1.getOutC()).to(digitS1.getInC());
-        new Signal(local).from(decoderS1.getOutD()).to(digitS1.getInD());
-        new Signal(local).from(decoderS1.getOutE()).to(digitS1.getInE());
-        new Signal(local).from(decoderS1.getOutF()).to(digitS1.getInF());
-        new Signal(local).from(decoderS1.getOutG()).to(digitS1.getInG());
+	public Switch getM1Switch() {
+		return setM1Switch;
+	}
 
-        new Signal(local).from(decoderM0.getOutA()).to(digitM0.getInA());
-        new Signal(local).from(decoderM0.getOutB()).to(digitM0.getInB());
-        new Signal(local).from(decoderM0.getOutC()).to(digitM0.getInC());
-        new Signal(local).from(decoderM0.getOutD()).to(digitM0.getInD());
-        new Signal(local).from(decoderM0.getOutE()).to(digitM0.getInE());
-        new Signal(local).from(decoderM0.getOutF()).to(digitM0.getInF());
-        new Signal(local).from(decoderM0.getOutG()).to(digitM0.getInG());
+	public Switch getStartSwitch() {
+		return startSwitch;
+	}
 
-        new Signal(local).from(decoderM1.getOutA()).to(digitM1.getInA());
-        new Signal(local).from(decoderM1.getOutB()).to(digitM1.getInB());
-        new Signal(local).from(decoderM1.getOutC()).to(digitM1.getInC());
-        new Signal(local).from(decoderM1.getOutD()).to(digitM1.getInD());
-        new Signal(local).from(decoderM1.getOutE()).to(digitM1.getInE());
-        new Signal(local).from(decoderM1.getOutF()).to(digitM1.getInF());
-        new Signal(local).from(decoderM1.getOutG()).to(digitM1.getInG());
-    }
-
-    public Input getPowerIn()
-    {
-        return powerIn;
-    }
-
-    public RelayTimerDigitPCB getDisplayS0()
-    {
-        return digitS0;
-    }
-
-    public RelayTimerDigitPCB getDisplayS1()
-    {
-        return digitS1;
-    }
-
-    public RelayTimerDigitPCB getDisplayM0()
-    {
-        return digitM0;
-    }
-
-    public RelayTimerDigitPCB getDisplayM1()
-    {
-        return digitM1;
-    }
-
-    public Switch getM0Switch()
-    {
-        return setM0Switch;
-    }
-
-    public Switch getM1Switch()
-    {
-        return setM1Switch;
-    }
-
-    public Switch getStartSwitch()
-    {
-        return startSwitch;
-    }
-
-    public Switch getResetSwitch()
-    {
-        return resetSwitch;
-    }
+	public Switch getResetSwitch() {
+		return resetSwitch;
+	}
 }

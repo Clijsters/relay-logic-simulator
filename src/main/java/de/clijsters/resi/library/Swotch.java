@@ -9,70 +9,57 @@ import de.clijsters.resi.common.Output;
  *
  * @author Peter H&auml;nsgen
  */
-public class Swotch extends AbstractSwitch
-{
-    private final Input _in;
+public class Swotch extends AbstractSwitch {
+	private final Input _in;
+	private final Input in;
+	private final Output middleOut;
 
-    private final Input in;
+	/**
+	 * The constructor.
+	 */
+	public Swotch(Circuit circuit, String name) {
+		super(circuit, name);
 
-    private final Output middleOut;
+		_in = new Input();
+		in = new Input();
+		middleOut = new Output();
+	}
 
-    /**
-     * The constructor.
-     */
-    public Swotch(Circuit circuit, String name)
-    {
-        super(circuit, name);
+	public Input get_In() {
+		return _in;
+	}
 
-        _in = new Input();
-        in = new Input();
-        middleOut = new Output();
-    }
+	public Input getIn() {
+		return in;
+	}
 
-    public Input get_In()
-    {
-        return _in;
-    }
+	public Output getMiddleOut() {
+		return middleOut;
+	}
 
-    public Input getIn()
-    {
-        return in;
-    }
+	@Override
+	public void simulate() {
+		if (isPushed()) {
+			middleOut.setValue(in.getValue());
+		} else {
+			middleOut.setValue(_in.getValue());
+		}
+	}
 
-    public Output getMiddleOut()
-    {
-        return middleOut;
-    }
-
-    @Override
-    public void simulate()
-    {
-        if (isPushed())
-        {
-            middleOut.setValue(in.getValue());
-        }
-        else
-        {
-            middleOut.setValue(_in.getValue());
-        }
-    }
-
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[Swotch ");
-        sb.append(getName());
-        sb.append(": ");
-        sb.append("pushed=");
-        sb.append(String.valueOf(isPushed()));
-        sb.append(", _in=");
-        sb.append(String.valueOf(_in));
-        sb.append(", in=");
-        sb.append(String.valueOf(in));
-        sb.append(", middleOut=");
-        sb.append(String.valueOf(middleOut));
-        sb.append("]");
-        return sb.toString();
-    }
+	@Override
+	public String toString() {
+		String sb = "[Swotch " +
+				getName() +
+				": " +
+				"pushed=" +
+				isPushed() +
+				", _in=" +
+				_in +
+				", in=" +
+				in +
+				", middleOut=" +
+				middleOut +
+				"]";
+		return sb;
+	}
 }

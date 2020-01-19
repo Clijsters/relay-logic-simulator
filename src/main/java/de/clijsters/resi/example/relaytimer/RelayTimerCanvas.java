@@ -9,86 +9,70 @@ import java.awt.*;
  *
  * @author Peter H&auml;nsgen
  */
-public class RelayTimerCanvas extends Canvas
-{
-    private static final long serialVersionUID = 1L;
+public class RelayTimerCanvas extends Canvas {
+	private static final long serialVersionUID = 1L;
+	private RelayTimerDigitPCB digitS0;
+	private RelayTimerDigitPCB digitS1;
+	private RelayTimerDigitPCB digitM0;
+	private RelayTimerDigitPCB digitM1;
 
-    private RelayTimerDigitPCB digitS0;
+	/**
+	 * The constructor.
+	 */
+	public RelayTimerCanvas(RelayTimer timer) {
+		this.digitS0 = timer.getDisplayS0();
+		this.digitS1 = timer.getDisplayS1();
+		this.digitM0 = timer.getDisplayM0();
+		this.digitM1 = timer.getDisplayM1();
+	}
 
-    private RelayTimerDigitPCB digitS1;
+	@Override
+	public void update(Graphics g) {
+		paint(g);
+	}
 
-    private RelayTimerDigitPCB digitM0;
+	@Override
+	public void paint(Graphics g) {
+		int w = getWidth();
+		int h = getHeight();
 
-    private RelayTimerDigitPCB digitM1;
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(0, 0, w, h);
 
-    /**
-     * The constructor.
-     */
-    public RelayTimerCanvas(RelayTimer timer)
-    {
-        this.digitS0 = timer.getDisplayS0();
-        this.digitS1 = timer.getDisplayS1();
-        this.digitM0 = timer.getDisplayM0();
-        this.digitM1 = timer.getDisplayM1();
-    }
+		// paint it in the middle of the canvas
+		int x = (w - 230) / 2;
+		int y = (h - 120) / 2;
 
-    @Override
-    public void update(Graphics g)
-    {
-        paint(g);
-    }
+		g.setColor(Color.GREEN);
+		paint(digitM1.getDisplay(), g, x + 20, y + 20);
+		paint(digitM0.getDisplay(), g, x + 70, y + 20);
 
-    @Override
-    public void paint(Graphics g)
-    {
-        int w = getWidth();
-        int h = getHeight();
+		g.setColor(Color.RED);
+		paint(digitS1.getDisplay(), g, x + 120, y + 20);
+		paint(digitS0.getDisplay(), g, x + 170, y + 20);
+	}
 
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(0, 0, w, h);
-
-        // paint it in the middle of the canvas
-        int x = (w - 230) / 2;
-        int y = (h - 120) / 2;
-
-        g.setColor(Color.GREEN);
-        paint(digitM1.getDisplay(), g, x + 20, y + 20);
-        paint(digitM0.getDisplay(), g, x + 70, y + 20);
-
-        g.setColor(Color.RED);
-        paint(digitS1.getDisplay(), g, x + 120, y + 20);
-        paint(digitS0.getDisplay(), g, x + 170, y + 20);
-    }
-
-    private void paint(SevenSegmentDisplay digit, Graphics g, int xOffset, int yOffset)
-    {
-        if (digit.getA().isOn())
-        {
-            g.drawLine(xOffset, yOffset, xOffset + 40, yOffset);
-        }
-        if (digit.getB().isOn())
-        {
-            g.drawLine(xOffset + 40, yOffset, xOffset + 40, yOffset + 40);
-        }
-        if (digit.getC().isOn())
-        {
-            g.drawLine(xOffset + 40, yOffset + 40, xOffset + 40, yOffset + 80);
-        }
-        if (digit.getD().isOn())
-        {
-            g.drawLine(xOffset, yOffset + 80, xOffset + 40, yOffset + 80);
-        }
-        if (digit.getE().isOn())
-        {
-            g.drawLine(xOffset, yOffset + 80, xOffset, yOffset + 40);
-        }
-        if (digit.getF().isOn())
-        {
-            g.drawLine(xOffset, yOffset + 40, xOffset, yOffset);
-        }
-        if (digit.getG().isOn())
-        {
-            g.drawLine(xOffset, yOffset + 40, xOffset + 40, yOffset + 40);
-        }
-    }
+	private void paint(SevenSegmentDisplay digit, Graphics g, int xOffset, int yOffset) {
+		if (digit.getA().isOn()) {
+			g.drawLine(xOffset, yOffset, xOffset + 40, yOffset);
+		}
+		if (digit.getB().isOn()) {
+			g.drawLine(xOffset + 40, yOffset, xOffset + 40, yOffset + 40);
+		}
+		if (digit.getC().isOn()) {
+			g.drawLine(xOffset + 40, yOffset + 40, xOffset + 40, yOffset + 80);
+		}
+		if (digit.getD().isOn()) {
+			g.drawLine(xOffset, yOffset + 80, xOffset + 40, yOffset + 80);
+		}
+		if (digit.getE().isOn()) {
+			g.drawLine(xOffset, yOffset + 80, xOffset, yOffset + 40);
+		}
+		if (digit.getF().isOn()) {
+			g.drawLine(xOffset, yOffset + 40, xOffset, yOffset);
+		}
+		if (digit.getG().isOn()) {
+			g.drawLine(xOffset, yOffset + 40, xOffset + 40, yOffset + 40);
+		}
+	}
 }

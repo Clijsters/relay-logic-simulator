@@ -9,31 +9,25 @@ import de.clijsters.resi.util.console.Console;
  *
  * @author Peter H&auml;nsgen
  */
-public class PartConsoleMonitor implements Monitor
-{
-    private Part part;
+public class PartConsoleMonitor implements Monitor {
+	private Part part;
+	private Console console;
+	private String lastDebugMessage;
 
-    private Console console;
+	/**
+	 * The constructor.
+	 */
+	public PartConsoleMonitor(Part part, Console console) {
+		this.part = part;
+		this.console = console;
+	}
 
-    private String lastDebugMessage;
-
-    /**
-     * The constructor.
-     */
-    public PartConsoleMonitor(Part part, Console console)
-    {
-        this.part = part;
-        this.console = console;
-    }
-
-    @Override
-    public void monitor()
-    {
-        String debugMessage = part.toString();
-        if (!debugMessage.equals(lastDebugMessage))
-        {
-            console.println(debugMessage);
-            lastDebugMessage = debugMessage;
-        }
-    }
+	@Override
+	public void monitor() {
+		String debugMessage = part.toString();
+		if (!debugMessage.equals(lastDebugMessage)) {
+			console.println(debugMessage);
+			lastDebugMessage = debugMessage;
+		}
+	}
 }

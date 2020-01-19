@@ -5,34 +5,29 @@ package de.clijsters.resi.common;
  *
  * @author Peter H&auml;nsgen
  */
-public class Ground extends Part
-{
-    private Output out;
+public class Ground extends Part {
+	private Output out;
 
-    /**
-     * The constructor.
-     */
-    public Ground(Circuit circuit, String name)
-    {
-        super(circuit, name);
+	/**
+	 * The constructor.
+	 */
+	public Ground(Circuit circuit, String name) {
+		super(circuit, name);
 
-        out = new Output();
-    }
+		out = new Output();
+	}
 
-    public Output getOut()
-    {
-        return out;
-    }
+	public Output getOut() {
+		return out;
+	}
 
-    @Override
-    public void simulate()
-    {
-        out.setValue(false);
-    }
+	@Override
+	public void simulate() {
+		out.setValue(false);
+	}
 
-    @Override
-    public String toString()
-    {
-        return "[Ground " + getName() + "=false]";
-    }
+	@Override
+	public String toString() {
+		return "[Ground " + getName() + "=false]";
+	}
 }

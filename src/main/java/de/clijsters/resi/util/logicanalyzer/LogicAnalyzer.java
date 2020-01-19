@@ -14,108 +14,87 @@ import java.util.List;
  *
  * @author Peter H&auml;nsgen
  */
-public class LogicAnalyzer implements Monitor
-{
-    private List<Track> tracks;
+public class LogicAnalyzer implements Monitor {
+	private List<Track> tracks;
+	private int maxValues;
 
-    private int maxValues;
+	/**
+	 * The constructor.
+	 */
+	public LogicAnalyzer(int maxValues) {
+		this.maxValues = maxValues;
 
-    /**
-     * The constructor.
-     */
-    public LogicAnalyzer(int maxValues)
-    {
-        this.maxValues = maxValues;
+		tracks = new ArrayList<>();
+	}
 
-        tracks = new ArrayList<>();
-    }
+	public int getMaxValues() {
+		return maxValues;
+	}
 
-    public int getMaxValues()
-    {
-        return maxValues;
-    }
+	public Track addTrack(Signal signal) {
+		Track t = new Track(signal);
+		tracks.add(t);
+		return t;
+	}
 
-    public Track addTrack(Signal signal)
-    {
-        Track t = new Track(signal);
-        tracks.add(t);
-        return t;
-    }
+	public Collection<Track> getTracks() {
+		return tracks;
+	}
 
-    public Collection<Track> getTracks()
-    {
-        return tracks;
-    }
+	@Override
+	public void monitor() {
+		for (Track track : tracks) {
+			track.monitor();
+		}
+	}
 
-    @Override
-    public void monitor()
-    {
-        for (Track track : tracks)
-        {
-            track.monitor();
-        }
-    }
+	public class Track implements Monitor {
+		private Signal signal;
+		private String label;
+		private Color color;
+		private LinkedList<Boolean> values;
 
-    public class Track implements Monitor
-    {
-        private Signal signal;
+		private Track(Signal signal) {
+			this.signal = signal;
 
-        private String label;
+			this.label = signal.getName();
+			this.color = Color.GREEN;
 
-        private Color color;
+			values = new LinkedList<>();
+		}
 
-        private LinkedList<Boolean> values;
+		@Override
+		public void monitor() {
+			addValue(signal.getValue());
+		}
 
-        private Track(Signal signal)
-        {
-            this.signal = signal;
+		public String getLabel() {
+			return label;
+		}
 
-            this.label = signal.getName();
-            this.color = Color.GREEN;
+		public Track setLabel(String label) {
+			this.label = label;
+			return this;
+		}
 
-            values = new LinkedList<>();
-        }
+		public Color getColor() {
+			return color;
+		}
 
-        @Override
-        public void monitor()
-        {
-            addValue(signal.getValue());
-        }
+		public Track setColor(Color color) {
+			this.color = color;
+			return this;
+		}
 
-        public Track setLabel(String label)
-        {
-            this.label = label;
-            return this;
-        }
+		private void addValue(Boolean value) {
+			if (values.size() >= maxValues) {
+				values.removeFirst();
+			}
+			values.addLast(value);
+		}
 
-        public String getLabel()
-        {
-            return label;
-        }
-
-        public Track setColor(Color color)
-        {
-            this.color = color;
-            return this;
-        }
-
-        public Color getColor()
-        {
-            return color;
-        }
-
-        private void addValue(Boolean value)
-        {
-            if (values.size() >= maxValues)
-            {
-                values.removeFirst();
-            }
-            values.addLast(value);
-        }
-
-        public List<Boolean> getValues()
-        {
-            return new ArrayList<>(values);
-        }
-    }
+		public List<Boolean> getValues() {
+			return new ArrayList<>(values);
+		}
+	}
 }

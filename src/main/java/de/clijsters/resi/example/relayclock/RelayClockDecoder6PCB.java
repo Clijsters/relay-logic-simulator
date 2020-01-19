@@ -8,147 +8,117 @@ import de.clijsters.resi.library.SevenSegmentDecoder6;
  *
  * @author Peter H&auml;nsgen
  */
-public class RelayClockDecoder6PCB extends Component
-{
-    private Input powerIn;
+public class RelayClockDecoder6PCB extends Component {
+	private Input powerIn;
+	private Input in0;
+	private Input in1;
+	private Input in2;
+	private Input in3;
+	private Input in4;
+	private Input in5;
+	private Output outA;
+	private Output outB;
+	private Output outC;
+	private Output outD;
+	private Output outE;
+	private Output outF;
+	private Output outG;
 
-    private Input in0;
+	/**
+	 * The constructor.
+	 */
+	public RelayClockDecoder6PCB(Circuit circuit, String name) {
+		super(circuit, name);
 
-    private Input in1;
+		SevenSegmentDecoder6 decoder = new SevenSegmentDecoder6(circuit, name + "_Decoder");
+		powerIn = new Input();
 
-    private Input in2;
+		in0 = new Input();
+		in1 = new Input();
+		in2 = new Input();
+		in3 = new Input();
+		in4 = new Input();
+		in5 = new Input();
 
-    private Input in3;
+		outA = new Output();
+		outB = new Output();
+		outC = new Output();
+		outD = new Output();
+		outE = new Output();
+		outF = new Output();
+		outG = new Output();
 
-    private Input in4;
+		new Signal(circuit).from(powerIn).to(decoder.getPowerIn());
 
-    private Input in5;
+		new Signal(circuit).from(in0).to(decoder.getIn0());
+		new Signal(circuit).from(in1).to(decoder.getIn1());
+		new Signal(circuit).from(in2).to(decoder.getIn2());
+		new Signal(circuit).from(in3).to(decoder.getIn3());
+		new Signal(circuit).from(in4).to(decoder.getIn4());
+		new Signal(circuit).from(in5).to(decoder.getIn5());
 
-    private Output outA;
+		new Signal(circuit).from(decoder.getOutA()).to(outA);
+		new Signal(circuit).from(decoder.getOutB()).to(outB);
+		new Signal(circuit).from(decoder.getOutC()).to(outC);
+		new Signal(circuit).from(decoder.getOutD()).to(outD);
+		new Signal(circuit).from(decoder.getOutE()).to(outE);
+		new Signal(circuit).from(decoder.getOutF()).to(outF);
+		new Signal(circuit).from(decoder.getOutG()).to(outG);
+	}
 
-    private Output outB;
+	public Input getPowerIn() {
+		return powerIn;
+	}
 
-    private Output outC;
+	public Input getIn0() {
+		return in0;
+	}
 
-    private Output outD;
+	public Input getIn1() {
+		return in1;
+	}
 
-    private Output outE;
+	public Input getIn2() {
+		return in2;
+	}
 
-    private Output outF;
+	public Input getIn3() {
+		return in3;
+	}
 
-    private Output outG;
+	public Input getIn4() {
+		return in4;
+	}
 
-    /**
-     * The constructor.
-     */
-    public RelayClockDecoder6PCB(Circuit circuit, String name)
-    {
-        super(circuit, name);
+	public Input getIn5() {
+		return in5;
+	}
 
-        SevenSegmentDecoder6 decoder = new SevenSegmentDecoder6(circuit, name + "_Decoder");
+	public Output getOutA() {
+		return outA;
+	}
 
-        powerIn = new Input();
+	public Output getOutB() {
+		return outB;
+	}
 
-        in0 = new Input();
-        in1 = new Input();
-        in2 = new Input();
-        in3 = new Input();
-        in4 = new Input();
-        in5 = new Input();
+	public Output getOutC() {
+		return outC;
+	}
 
-        outA = new Output();
-        outB = new Output();
-        outC = new Output();
-        outD = new Output();
-        outE = new Output();
-        outF = new Output();
-        outG = new Output();
+	public Output getOutD() {
+		return outD;
+	}
 
-        new Signal(circuit).from(powerIn).to(decoder.getPowerIn());
+	public Output getOutE() {
+		return outE;
+	}
 
-        new Signal(circuit).from(in0).to(decoder.getIn0());
-        new Signal(circuit).from(in1).to(decoder.getIn1());
-        new Signal(circuit).from(in2).to(decoder.getIn2());
-        new Signal(circuit).from(in3).to(decoder.getIn3());
-        new Signal(circuit).from(in4).to(decoder.getIn4());
-        new Signal(circuit).from(in5).to(decoder.getIn5());
+	public Output getOutF() {
+		return outF;
+	}
 
-        new Signal(circuit).from(decoder.getOutA()).to(outA);
-        new Signal(circuit).from(decoder.getOutB()).to(outB);
-        new Signal(circuit).from(decoder.getOutC()).to(outC);
-        new Signal(circuit).from(decoder.getOutD()).to(outD);
-        new Signal(circuit).from(decoder.getOutE()).to(outE);
-        new Signal(circuit).from(decoder.getOutF()).to(outF);
-        new Signal(circuit).from(decoder.getOutG()).to(outG);
-    }
-
-    public Input getPowerIn()
-    {
-        return powerIn;
-    }
-
-    public Input getIn0()
-    {
-        return in0;
-    }
-
-    public Input getIn1()
-    {
-        return in1;
-    }
-
-    public Input getIn2()
-    {
-        return in2;
-    }
-
-    public Input getIn3()
-    {
-        return in3;
-    }
-
-    public Input getIn4()
-    {
-        return in4;
-    }
-
-    public Input getIn5()
-    {
-        return in5;
-    }
-
-    public Output getOutA()
-    {
-        return outA;
-    }
-
-    public Output getOutB()
-    {
-        return outB;
-    }
-
-    public Output getOutC()
-    {
-        return outC;
-    }
-
-    public Output getOutD()
-    {
-        return outD;
-    }
-
-    public Output getOutE()
-    {
-        return outE;
-    }
-
-    public Output getOutF()
-    {
-        return outF;
-    }
-
-    public Output getOutG()
-    {
-        return outG;
-    }
+	public Output getOutG() {
+		return outG;
+	}
 }

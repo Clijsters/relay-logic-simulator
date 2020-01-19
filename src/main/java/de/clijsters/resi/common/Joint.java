@@ -10,78 +10,64 @@ import java.util.Map;
  *
  * @author Peter H&auml;nsgen
  */
-public class Joint extends Part
-{
-    private Output out;
+public class Joint extends Part {
+	private Output out;
+	private Map<Integer, Input> inputs;
 
-    private Map<Integer, Input> inputs;
+	/**
+	 * The constructor.
+	 */
+	public Joint(Circuit circuit) {
+		super(circuit);
 
-    /**
-     * The constructor.
-     */
-    public Joint(Circuit circuit)
-    {
-        super(circuit);
+		out = new Output();
+		inputs = new HashMap<>();
+	}
 
-        out = new Output();
-        inputs = new HashMap<>();
-    }
+	/**
+	 * The constructor.
+	 */
+	public Joint(Circuit circuit, String name) {
+		super(circuit, name);
 
-    /**
-     * The constructor.
-     */
-    public Joint(Circuit circuit, String name)
-    {
-        super(circuit, name);
+		out = new Output();
+		inputs = new HashMap<>();
+	}
 
-        out = new Output();
-        inputs = new HashMap<>();
-    }
+	public Output getOut() {
+		return out;
+	}
 
-    public Output getOut()
-    {
-        return out;
-    }
+	public Input getIn(int i) {
+		Input in = inputs.get(i);
+		if (in == null) {
+			in = new Input();
+			inputs.put(i, in);
+		}
+		return in;
+	}
 
-    public Input getIn(int i)
-    {
-        Input in = inputs.get(i);
-        if (in == null)
-        {
-            in = new Input();
-            inputs.put(i, in);
-        }
-        return in;
-    }
+	@Override
+	public void simulate() {
+		Boolean state = null;
 
-    @Override
-    public void simulate()
-    {
-        Boolean state = null;
+		for (Input in : inputs.values()) {
+			Boolean value = in.getValue();
 
-        for (Input in : inputs.values())
-        {
-            Boolean value = in.getValue();
+			if (value != null) {
+				if (state == null) {
+					state = value;
+				} else if (state != value) {
+					throw new SimulatorException("Ambiguous values of input signals (" + toString() + ")");
+				}
+			}
+		}
 
-            if (value != null)
-            {
-                if (state == null)
-                {
-                    state = value;
-                }
-                else if (state != value)
-                {
-                    throw new SimulatorException("Ambigous values of input signals (" + toString() + ")");
-                }
-            }
-        }
+		out.setValue(state);
+	}
 
-        out.setValue(state);
-    }
-
-    @Override
-    public String toString()
-    {
-        return getName();
-    }
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

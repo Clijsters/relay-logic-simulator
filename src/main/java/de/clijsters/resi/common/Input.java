@@ -6,11 +6,9 @@ package de.clijsters.resi.common;
  *
  * @author Peter H&auml;nsgen
  */
-public class Input extends Connector
-{
-    public Boolean getValue()
-    {
-        Signal signal = getSignal();
-        return (signal != null) ? signal.getValue() : null;
-    }
+public class Input extends Connector {
+	public Boolean getValue() {
+		Signal signal = getSignal();
+		return (signal != null) ? signal.getValue() : null;
+	}
 }

@@ -9,166 +9,143 @@ import de.clijsters.resi.common.*;
  *
  * @author Peter H&auml;nsgen
  */
-public class SevenSegmentDecoder3 extends Component
-{
-    private final Input powerIn;
+public class SevenSegmentDecoder3 extends Component {
+	private final Input powerIn;
+	private final Input in0;
+	private final Input in1;
+	private final Input in2;
+	private final Output outA;
+	private final Output outB;
+	private final Output outC;
+	private final Output outD;
+	private final Output outE;
+	private final Output outF;
+	private final Output outG;
 
-    private final Input in0;
+	/**
+	 * The constructor.
+	 */
+	public SevenSegmentDecoder3(Circuit parent, String name) {
+		super(parent, name);
 
-    private final Input in1;
+		// external connectors
+		powerIn = new Input();
 
-    private final Input in2;
+		in0 = new Input();
+		in1 = new Input();
+		in2 = new Input();
 
-    private final Output outA;
+		outA = new Output();
+		outB = new Output();
+		outC = new Output();
+		outD = new Output();
+		outE = new Output();
+		outF = new Output();
+		outG = new Output();
 
-    private final Output outB;
+		Circuit local = getLocalCircuit();
 
-    private final Output outC;
+		// internal elements
+		Relay r0 = new Relay(local, name + "_R0");
+		Relay r1 = new Relay(local, name + "_R1");
+		Relay r2 = new Relay(local, name + "_R2");
 
-    private final Output outD;
+		// internal wirings
+		// connect the middle contact for all used relay switches with power
+		new Signal(local).from(powerIn)
+				.to(r0.getMiddleIn(0), r0.getMiddleIn(1), r0.getMiddleIn(2), r0.getMiddleIn(3), r0.getMiddleIn(4),
+						r0.getMiddleIn(5))
+				.to(r1.getMiddleIn(0), r1.getMiddleIn(1))
+				.to(r2.getMiddleIn(0), r2.getMiddleIn(1), r2.getMiddleIn(2), r2.getMiddleIn(3), r2.getMiddleIn(4));
 
-    private final Output outE;
+		// connect inputs with their coils
+		new Signal(local).from(in0).to(r0.getCoilIn());
+		new Signal(local).from(in1).to(r1.getCoilIn());
+		new Signal(local).from(in2).to(r2.getCoilIn());
 
-    private final Output outF;
+		// A
+		Joint ja = new Joint(local);
+		new Signal(local).from(r0.getOut(0)).to(ja.getIn(0));
+		new Signal(local).from(r2.getOut(0)).to(ja.getIn(1));
+		new Signal(local).from(ja.getOut()).to(outA);
 
-    private final Output outG;
+		// B
+		Joint jb = new Joint(local);
+		new Signal(local).from(r0.getOut(1)).to(jb.getIn(0));
+		new Signal(local).from(r1.getOut(0)).to(jb.getIn(1));
+		new Signal(local).from(r2.getOut(1)).to(jb.getIn(2));
+		new Signal(local).from(jb.getOut()).to(outB);
 
-    /**
-     * The constructor.
-     */
-    public SevenSegmentDecoder3(Circuit parent, String name)
-    {
-        super(parent, name);
+		// C
+		Joint jc = new Joint(local);
+		new Signal(local).from(r0.getOut(2)).to(jc.getIn(0));
+		new Signal(local).from(r1.getOut(1)).to(jc.getIn(1));
+		new Signal(local).from(jc.getOut()).to(outC);
 
-        // external connectors
-        powerIn = new Input();
+		// D
+		Joint jd = new Joint(local);
+		new Signal(local).from(r0.getOut(3)).to(jd.getIn(0));
+		new Signal(local).from(r2.getOut(2)).to(jd.getIn(1));
+		new Signal(local).from(jd.getOut()).to(outD);
 
-        in0 = new Input();
-        in1 = new Input();
-        in2 = new Input();
+		// E
+		Joint je = new Joint(local);
+		new Signal(local).from(r0.getOut(4)).to(je.getIn(0));
+		new Signal(local).from(r2.getOut(3)).to(je.getIn(1));
+		new Signal(local).from(je.getOut()).to(outE);
 
-        outA = new Output();
-        outB = new Output();
-        outC = new Output();
-        outD = new Output();
-        outE = new Output();
-        outF = new Output();
-        outG = new Output();
+		// F
+		Joint jf = new Joint(local);
+		new Signal(local).from(r0.getOut(5)).to(jf.getIn(0));
+		new Signal(local).from(jf.getOut()).to(outF);
 
-        Circuit local = getLocalCircuit();
+		// G
+		Joint jg = new Joint(local);
+		new Signal(local).from(r2.getOut(4)).to(jg.getIn(0));
+		new Signal(local).from(jg.getOut()).to(outG);
+	}
 
-        // internal elements
-        Relay r0 = new Relay(local, name + "_R0");
-        Relay r1 = new Relay(local, name + "_R1");
-        Relay r2 = new Relay(local, name + "_R2");
+	public Input getPowerIn() {
+		return powerIn;
+	}
 
-        // internal wirings
-        // connect the middle contact for all used relay switches with power
-        new Signal(local).from(powerIn)
-            .to(r0.getMiddleIn(0), r0.getMiddleIn(1), r0.getMiddleIn(2), r0.getMiddleIn(3), r0.getMiddleIn(4),
-                r0.getMiddleIn(5))
-            .to(r1.getMiddleIn(0), r1.getMiddleIn(1))
-            .to(r2.getMiddleIn(0), r2.getMiddleIn(1), r2.getMiddleIn(2), r2.getMiddleIn(3), r2.getMiddleIn(4));
+	public Input getIn0() {
+		return in0;
+	}
 
-        // connect inputs with their coils
-        new Signal(local).from(in0).to(r0.getCoilIn());
-        new Signal(local).from(in1).to(r1.getCoilIn());
-        new Signal(local).from(in2).to(r2.getCoilIn());
+	public Input getIn1() {
+		return in1;
+	}
 
-        // A
-        Joint ja = new Joint(local);
-        new Signal(local).from(r0.getOut(0)).to(ja.getIn(0));
-        new Signal(local).from(r2.getOut(0)).to(ja.getIn(1));
-        new Signal(local).from(ja.getOut()).to(outA);
+	public Input getIn2() {
+		return in2;
+	}
 
-        // B
-        Joint jb = new Joint(local);
-        new Signal(local).from(r0.getOut(1)).to(jb.getIn(0));
-        new Signal(local).from(r1.getOut(0)).to(jb.getIn(1));
-        new Signal(local).from(r2.getOut(1)).to(jb.getIn(2));
-        new Signal(local).from(jb.getOut()).to(outB);
+	public Output getOutA() {
+		return outA;
+	}
 
-        // C
-        Joint jc = new Joint(local);
-        new Signal(local).from(r0.getOut(2)).to(jc.getIn(0));
-        new Signal(local).from(r1.getOut(1)).to(jc.getIn(1));
-        new Signal(local).from(jc.getOut()).to(outC);
+	public Output getOutB() {
+		return outB;
+	}
 
-        // D
-        Joint jd = new Joint(local);
-        new Signal(local).from(r0.getOut(3)).to(jd.getIn(0));
-        new Signal(local).from(r2.getOut(2)).to(jd.getIn(1));
-        new Signal(local).from(jd.getOut()).to(outD);
+	public Output getOutC() {
+		return outC;
+	}
 
-        // E
-        Joint je = new Joint(local);
-        new Signal(local).from(r0.getOut(4)).to(je.getIn(0));
-        new Signal(local).from(r2.getOut(3)).to(je.getIn(1));
-        new Signal(local).from(je.getOut()).to(outE);
+	public Output getOutD() {
+		return outD;
+	}
 
-        // F
-        Joint jf = new Joint(local);
-        new Signal(local).from(r0.getOut(5)).to(jf.getIn(0));
-        new Signal(local).from(jf.getOut()).to(outF);
+	public Output getOutE() {
+		return outE;
+	}
 
-        // G
-        Joint jg = new Joint(local);
-        new Signal(local).from(r2.getOut(4)).to(jg.getIn(0));
-        new Signal(local).from(jg.getOut()).to(outG);
-    }
+	public Output getOutF() {
+		return outF;
+	}
 
-    public Input getPowerIn()
-    {
-        return powerIn;
-    }
-
-    public Input getIn0()
-    {
-        return in0;
-    }
-
-    public Input getIn1()
-    {
-        return in1;
-    }
-
-    public Input getIn2()
-    {
-        return in2;
-    }
-
-    public Output getOutA()
-    {
-        return outA;
-    }
-
-    public Output getOutB()
-    {
-        return outB;
-    }
-
-    public Output getOutC()
-    {
-        return outC;
-    }
-
-    public Output getOutD()
-    {
-        return outD;
-    }
-
-    public Output getOutE()
-    {
-        return outE;
-    }
-
-    public Output getOutF()
-    {
-        return outF;
-    }
-
-    public Output getOutG()
-    {
-        return outG;
-    }
+	public Output getOutG() {
+		return outG;
+	}
 }

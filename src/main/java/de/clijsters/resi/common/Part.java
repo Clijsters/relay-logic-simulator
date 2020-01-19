@@ -6,32 +6,28 @@ package de.clijsters.resi.common;
  *
  * @author Peter H&auml;nsgen
  */
-public abstract class Part extends Element
-{
-    private static int instanceCount;
+public abstract class Part extends Element {
+	private static int instanceCount;
 
-    /**
-     * The constructor for an automatically generated name.
-     */
-    public Part(Circuit circuit)
-    {
-        this(circuit, generateName());
-    }
+	/**
+	 * The constructor for an automatically generated name.
+	 */
+	public Part(Circuit circuit) {
+		this(circuit, generateName());
+	}
 
-    /**
-     * The constructor.
-     */
-    public Part(Circuit circuit, String name)
-    {
-        super(circuit, name);
+	/**
+	 * The constructor.
+	 */
+	public Part(Circuit circuit, String name) {
+		super(circuit, name);
 
-        circuit.addPart(this);
-    }
+		circuit.addPart(this);
+	}
 
-    public abstract void simulate();
+	private static String generateName() {
+		return "p" + instanceCount++;
+	}
 
-    private static String generateName()
-    {
-        return "p" + String.valueOf(instanceCount++);
-    }
+	public abstract void simulate();
 }

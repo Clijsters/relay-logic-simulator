@@ -8,151 +8,121 @@ import de.clijsters.resi.library.SevenSegmentDecoder6;
  *
  * @author Peter H&auml;nsgen
  */
-public class RelayTimerDecoder6PCB extends Component
-{
-    private final Input powerIn;
+public class RelayTimerDecoder6PCB extends Component {
+	private final Input powerIn;
+	private final Input in0;
+	private final Input in1;
+	private final Input in2;
+	private final Input in3;
+	private final Input in4;
+	private final Input in5;
+	private final Output outA;
+	private final Output outB;
+	private final Output outC;
+	private final Output outD;
+	private final Output outE;
+	private final Output outF;
+	private final Output outG;
 
-    private final Input in0;
+	/**
+	 * The constructor.
+	 */
+	public RelayTimerDecoder6PCB(Circuit parent, String name) {
+		super(parent, name);
+		powerIn = new Input();
 
-    private final Input in1;
+		in0 = new Input();
+		in1 = new Input();
+		in2 = new Input();
+		in3 = new Input();
+		in4 = new Input();
+		in5 = new Input();
 
-    private final Input in2;
+		outA = new Output();
+		outB = new Output();
+		outC = new Output();
+		outD = new Output();
+		outE = new Output();
+		outF = new Output();
+		outG = new Output();
 
-    private final Input in3;
+		Circuit local = getLocalCircuit();
 
-    private final Input in4;
+		SevenSegmentDecoder6 decoder = new SevenSegmentDecoder6(local, name + "_Decoder");
 
-    private final Input in5;
+		// TODO there is still space left on this PCB
 
-    private final Output outA;
+		new Signal(local).from(powerIn).to(decoder.getPowerIn());
 
-    private final Output outB;
+		new Signal(local).from(in0).to(decoder.getIn0());
+		new Signal(local).from(in1).to(decoder.getIn1());
+		new Signal(local).from(in2).to(decoder.getIn2());
+		new Signal(local).from(in3).to(decoder.getIn3());
+		new Signal(local).from(in4).to(decoder.getIn4());
+		new Signal(local).from(in5).to(decoder.getIn5());
 
-    private final Output outC;
+		new Signal(local).from(decoder.getOutA()).to(outA);
+		new Signal(local).from(decoder.getOutB()).to(outB);
+		new Signal(local).from(decoder.getOutC()).to(outC);
+		new Signal(local).from(decoder.getOutD()).to(outD);
+		new Signal(local).from(decoder.getOutE()).to(outE);
+		new Signal(local).from(decoder.getOutF()).to(outF);
+		new Signal(local).from(decoder.getOutG()).to(outG);
+	}
 
-    private final Output outD;
+	public Input getPowerIn() {
+		return powerIn;
+	}
 
-    private final Output outE;
+	public Input getIn0() {
+		return in0;
+	}
 
-    private final Output outF;
+	public Input getIn1() {
+		return in1;
+	}
 
-    private final Output outG;
+	public Input getIn2() {
+		return in2;
+	}
 
-    /**
-     * The constructor.
-     */
-    public RelayTimerDecoder6PCB(Circuit parent, String name)
-    {
-        super(parent, name);
+	public Input getIn3() {
+		return in3;
+	}
 
-        powerIn = new Input();
+	public Input getIn4() {
+		return in4;
+	}
 
-        in0 = new Input();
-        in1 = new Input();
-        in2 = new Input();
-        in3 = new Input();
-        in4 = new Input();
-        in5 = new Input();
+	public Input getIn5() {
+		return in5;
+	}
 
-        outA = new Output();
-        outB = new Output();
-        outC = new Output();
-        outD = new Output();
-        outE = new Output();
-        outF = new Output();
-        outG = new Output();
+	public Output getOutA() {
+		return outA;
+	}
 
-        Circuit local = getLocalCircuit();
+	public Output getOutB() {
+		return outB;
+	}
 
-        SevenSegmentDecoder6 decoder = new SevenSegmentDecoder6(local, name + "_Decoder");
+	public Output getOutC() {
+		return outC;
+	}
 
-        // TODO there is still space left on this PCB
+	public Output getOutD() {
+		return outD;
+	}
 
-        new Signal(local).from(powerIn).to(decoder.getPowerIn());
+	public Output getOutE() {
+		return outE;
+	}
 
-        new Signal(local).from(in0).to(decoder.getIn0());
-        new Signal(local).from(in1).to(decoder.getIn1());
-        new Signal(local).from(in2).to(decoder.getIn2());
-        new Signal(local).from(in3).to(decoder.getIn3());
-        new Signal(local).from(in4).to(decoder.getIn4());
-        new Signal(local).from(in5).to(decoder.getIn5());
+	public Output getOutF() {
+		return outF;
+	}
 
-        new Signal(local).from(decoder.getOutA()).to(outA);
-        new Signal(local).from(decoder.getOutB()).to(outB);
-        new Signal(local).from(decoder.getOutC()).to(outC);
-        new Signal(local).from(decoder.getOutD()).to(outD);
-        new Signal(local).from(decoder.getOutE()).to(outE);
-        new Signal(local).from(decoder.getOutF()).to(outF);
-        new Signal(local).from(decoder.getOutG()).to(outG);
-    }
-
-    public Input getPowerIn()
-    {
-        return powerIn;
-    }
-
-    public Input getIn0()
-    {
-        return in0;
-    }
-
-    public Input getIn1()
-    {
-        return in1;
-    }
-
-    public Input getIn2()
-    {
-        return in2;
-    }
-
-    public Input getIn3()
-    {
-        return in3;
-    }
-
-    public Input getIn4()
-    {
-        return in4;
-    }
-
-    public Input getIn5()
-    {
-        return in5;
-    }
-
-    public Output getOutA()
-    {
-        return outA;
-    }
-
-    public Output getOutB()
-    {
-        return outB;
-    }
-
-    public Output getOutC()
-    {
-        return outC;
-    }
-
-    public Output getOutD()
-    {
-        return outD;
-    }
-
-    public Output getOutE()
-    {
-        return outE;
-    }
-
-    public Output getOutF()
-    {
-        return outF;
-    }
-
-    public Output getOutG()
-    {
-        return outG;
-    }
+	public Output getOutG() {
+		return outG;
+	}
 }

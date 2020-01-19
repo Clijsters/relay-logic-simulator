@@ -9,72 +9,59 @@ import de.clijsters.resi.common.Output;
  *
  * @author Peter H&auml;nsgen
  */
-public class Switch extends AbstractSwitch
-{
-    private final Input middleIn;
+public class Switch extends AbstractSwitch {
+	private final Input middleIn;
+	private final Output _out;
+	private final Output out;
 
-    private final Output _out;
+	/**
+	 * The constructor.
+	 */
+	public Switch(Circuit circuit, String name) {
+		super(circuit, name);
 
-    private final Output out;
+		middleIn = new Input();
+		_out = new Output();
+		out = new Output();
+	}
 
-    /**
-     * The constructor.
-     */
-    public Switch(Circuit circuit, String name)
-    {
-        super(circuit, name);
+	public Input getMiddleIn() {
+		return middleIn;
+	}
 
-        middleIn = new Input();
-        _out = new Output();
-        out = new Output();
-    }
+	public Output get_Out() {
+		return _out;
+	}
 
-    public Input getMiddleIn()
-    {
-        return middleIn;
-    }
+	public Output getOut() {
+		return out;
+	}
 
-    public Output get_Out()
-    {
-        return _out;
-    }
+	@Override
+	public void simulate() {
+		if (isPushed()) {
+			_out.setValue(null);
+			out.setValue(middleIn.getValue());
+		} else {
+			_out.setValue(middleIn.getValue());
+			out.setValue(null);
+		}
+	}
 
-    public Output getOut()
-    {
-        return out;
-    }
-
-    @Override
-    public void simulate()
-    {
-        if (isPushed())
-        {
-            _out.setValue(null);
-            out.setValue(middleIn.getValue());
-        }
-        else
-        {
-            _out.setValue(middleIn.getValue());
-            out.setValue(null);
-        }
-    }
-
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[Switch ");
-        sb.append(getName());
-        sb.append(": ");
-        sb.append("pushed=");
-        sb.append(String.valueOf(isPushed()));
-        sb.append(", middleIn=");
-        sb.append(String.valueOf(middleIn));
-        sb.append(", _out=");
-        sb.append(String.valueOf(_out));
-        sb.append(", out=");
-        sb.append(String.valueOf(out));
-        sb.append("]");
-        return sb.toString();
-    }
+	@Override
+	public String toString() {
+		String sb = "[Switch " +
+				getName() +
+				": " +
+				"pushed=" +
+				isPushed() +
+				", middleIn=" +
+				middleIn +
+				", _out=" +
+				_out +
+				", out=" +
+				out +
+				"]";
+		return sb;
+	}
 }

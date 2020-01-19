@@ -9,36 +9,31 @@ import de.clijsters.resi.common.Part;
  *
  * @author Peter H&auml;nsgen
  */
-public abstract class AbstractSwitch extends Part
-{
-    private boolean pushed;
+public abstract class AbstractSwitch extends Part {
+	private boolean pushed;
 
-    /**
-     * The constructor.
-     */
-    public AbstractSwitch(Circuit circuit, String name)
-    {
-        super(circuit, name);
-    }
+	/**
+	 * The constructor.
+	 */
+	public AbstractSwitch(Circuit circuit, String name) {
+		super(circuit, name);
+	}
 
-    /**
-     * Puts the switch into active state.
-     */
-    public void push()
-    {
-        pushed = true;
-    }
+	/**
+	 * Puts the switch into active state.
+	 */
+	public void push() {
+		pushed = true;
+	}
 
-    /**
-     * Puts the switch back into default passive state.
-     */
-    public void release()
-    {
-        pushed = false;
-    }
+	/**
+	 * Puts the switch back into default passive state.
+	 */
+	public void release() {
+		pushed = false;
+	}
 
-    public boolean isPushed()
-    {
-        return pushed;
-    }
+	public boolean isPushed() {
+		return pushed;
+	}
 }

@@ -9,46 +9,38 @@ import de.clijsters.resi.common.Part;
  *
  * @author Peter H&auml;nsgen
  */
-public class Lamp extends Part
-{
-    private final Input in;
+public class Lamp extends Part {
+	private final Input in;
+	private Boolean state;
 
-    private Boolean state;
+	/**
+	 * The constructor.
+	 */
+	public Lamp(Circuit circuit, String name) {
+		super(circuit, name);
 
-    /**
-     * The constructor.
-     */
-    public Lamp(Circuit circuit, String name)
-    {
-        super(circuit, name);
+		in = new Input();
+	}
 
-        in = new Input();
-    }
+	public Input getIn() {
+		return in;
+	}
 
-    public Input getIn()
-    {
-        return in;
-    }
+	public boolean isOn() {
+		return Boolean.TRUE.equals(state);
+	}
 
-    public boolean isOn()
-    {
-        return Boolean.TRUE.equals(state);
-    }
+	public String getOn() {
+		return isOn() ? "O" : ".";
+	}
 
-    public String getOn()
-    {
-        return isOn() ? "O" : ".";
-    }
+	@Override
+	public void simulate() {
+		state = in.getValue();
+	}
 
-    @Override
-    public void simulate()
-    {
-        state = in.getValue();
-    }
-
-    @Override
-    public String toString()
-    {
-        return getName() + ": " + (isOn() ? "on" : "off");
-    }
+	@Override
+	public String toString() {
+		return getName() + ": " + (isOn() ? "on" : "off");
+	}
 }

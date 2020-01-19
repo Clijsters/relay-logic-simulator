@@ -1,91 +1,82 @@
 package de.clijsters.resi.library;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import de.clijsters.resi.library.FlipFlop;
+import de.clijsters.resi.common.*;
 import org.junit.Test;
 
-import de.clijsters.resi.common.Circuit;
-import de.clijsters.resi.common.Input;
-import de.clijsters.resi.common.Output;
-import de.clijsters.resi.common.Power;
-import de.clijsters.resi.common.Signal;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the flip flop component.
  *
  * @author Peter H&auml;nsgen
  */
-public class FlipFlopTest
-{
-    @Test
-    public void testFlipFlop()
-    {
-        Circuit circuit = new Circuit();
+public class FlipFlopTest {
+	@Test
+	public void testFlipFlop() {
+		Circuit circuit = new Circuit();
+		Power p = new Power(circuit, "VCC");
+		FlipFlop ff = new FlipFlop(circuit, "FlipFlop");
 
-        Power p = new Power(circuit, "VCC");
-        FlipFlop ff = new FlipFlop(circuit, "FlipFlop");
+		new Signal(circuit).from(p.getOut()).to(ff.getPowerIn());
 
-        new Signal(circuit).from(p.getOut()).to(ff.getPowerIn());
+		Output _cl = new Output();
+		Output cl = new Output();
+		Input _q = new Input();
+		Input q = new Input();
 
-        Output _cl = new Output();
-        Output cl = new Output();
-        Input _q = new Input();
-        Input q = new Input();
+		new Signal(circuit).from(_cl).to(ff.get_Clock());
+		new Signal(circuit).from(cl).to(ff.getClock());
+		new Signal(circuit).from(ff.get_Out()).to(_q);
+		new Signal(circuit).from(ff.getOut()).to(q);
 
-        new Signal(circuit).from(_cl).to(ff.get_Clock());
-        new Signal(circuit).from(cl).to(ff.getClock());
-        new Signal(circuit).from(ff.get_Out()).to(_q);
-        new Signal(circuit).from(ff.getOut()).to(q);
+		// start
+		_cl.setValue(true);
+		cl.setValue(null);
+		circuit.simulate();
+		assertTrue(_q.getValue());
+		assertNull(q.getValue());
 
-        // start
-        _cl.setValue(true);
-        cl.setValue(null);
-        circuit.simulate();
-        assertTrue(_q.getValue());
-        assertNull(q.getValue());
+		// clock 1 down
+		_cl.setValue(null);
+		cl.setValue(true);
+		circuit.simulate();
+		assertTrue(_q.getValue());
+		assertNull(q.getValue());
 
-        // clock 1 down
-        _cl.setValue(null);
-        cl.setValue(true);
-        circuit.simulate();
-        assertTrue(_q.getValue());
-        assertNull(q.getValue());
+		// clock 1 up
+		_cl.setValue(true);
+		cl.setValue(null);
+		circuit.simulate();
+		assertNull(_q.getValue());
+		assertTrue(q.getValue());
 
-        // clock 1 up
-        _cl.setValue(true);
-        cl.setValue(null);
-        circuit.simulate();
-        assertNull(_q.getValue());
-        assertTrue(q.getValue());
+		// clock 2 down
+		_cl.setValue(null);
+		cl.setValue(true);
+		circuit.simulate();
+		assertNull(_q.getValue());
+		assertTrue(q.getValue());
 
-        // clock 2 down
-        _cl.setValue(null);
-        cl.setValue(true);
-        circuit.simulate();
-        assertNull(_q.getValue());
-        assertTrue(q.getValue());
+		// clock 2 up
+		_cl.setValue(true);
+		cl.setValue(null);
+		circuit.simulate();
+		assertTrue(_q.getValue());
+		assertNull(q.getValue());
 
-        // clock 2 up
-        _cl.setValue(true);
-        cl.setValue(null);
-        circuit.simulate();
-        assertTrue(_q.getValue());
-        assertNull(q.getValue());
+		// clock 1 down
+		_cl.setValue(null);
+		cl.setValue(true);
+		circuit.simulate();
+		assertTrue(_q.getValue());
+		assertNull(q.getValue());
 
-        // clock 1 down
-        _cl.setValue(null);
-        cl.setValue(true);
-        circuit.simulate();
-        assertTrue(_q.getValue());
-        assertNull(q.getValue());
-
-        // clock 1 up
-        _cl.setValue(true);
-        cl.setValue(null);
-        circuit.simulate();
-        assertNull(_q.getValue());
-        assertTrue(q.getValue());
-    }
+		// clock 1 up
+		_cl.setValue(true);
+		cl.setValue(null);
+		circuit.simulate();
+		assertNull(_q.getValue());
+		assertTrue(q.getValue());
+	}
 }

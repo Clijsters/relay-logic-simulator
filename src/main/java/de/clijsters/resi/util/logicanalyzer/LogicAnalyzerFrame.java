@@ -11,39 +11,35 @@ import java.awt.*;
  *
  * @author Peter H&auml;nsgen
  */
-public class LogicAnalyzerFrame extends SimulatorFrame implements Monitor
-{
-    private static final long serialVersionUID = 1L;
+public class LogicAnalyzerFrame extends SimulatorFrame implements Monitor {
+	private static final long serialVersionUID = 1L;
+	private LogicAnalyzerCanvas canvas;
 
-    private LogicAnalyzerCanvas canvas;
+	/**
+	 * The constructor.
+	 */
+	public LogicAnalyzerFrame(Simulator simulator, LogicAnalyzer logicAnalyzer) {
+		super(simulator);
 
-    /**
-     * The constructor.
-     */
-    public LogicAnalyzerFrame(Simulator simulator, LogicAnalyzer logicAnalyzer)
-    {
-        super(simulator);
+		setTitle("Logic Analyzer");
+		setSize(600, 400);
 
-        setTitle("Logic Analyzer");
-        setSize(600, 400);
+		// position the frame in the center of the screen
+		Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((ss.width - getWidth()) / 2, (ss.height - getHeight()) / 2);
 
-        // position the frame in the center of the screen
-        Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((ss.width - getWidth()) / 2, (ss.height - getHeight()) / 2);
+		BorderLayout layout = new BorderLayout();
+		setLayout(layout);
 
-        BorderLayout layout = new BorderLayout();
-        setLayout(layout);
+		// logic analyzer display
+		canvas = new LogicAnalyzerCanvas(logicAnalyzer);
+		add(canvas, BorderLayout.CENTER);
 
-        // logic analyzer display
-        canvas = new LogicAnalyzerCanvas(logicAnalyzer);
-        add(canvas, BorderLayout.CENTER);
+		setVisible(true);
+	}
 
-        setVisible(true);
-    }
-
-    @Override
-    public void monitor()
-    {
-        canvas.repaint();
-    }
+	@Override
+	public void monitor() {
+		canvas.repaint();
+	}
 }

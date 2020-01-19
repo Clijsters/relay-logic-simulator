@@ -1,15 +1,11 @@
 package resi.example.relayclock;
 
-import resi.common.Circuit;
-import resi.common.Component;
-import resi.common.Input;
-import resi.common.Output;
-import resi.common.Signal;
+import resi.common.*;
 import resi.library.SevenSegmentDecoder3;
 
 /**
  * Represents a PCB for the relay clock containing the 7-segment-decoder for the reduced value range 0..2.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class RelayClockDecoder3PCB extends Component

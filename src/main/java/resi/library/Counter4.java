@@ -1,14 +1,10 @@
 package resi.library;
 
-import resi.common.Circuit;
-import resi.common.Component;
-import resi.common.Input;
-import resi.common.Output;
-import resi.common.Signal;
+import resi.common.*;
 
 /**
  * This is a 2-bit counter based on flip flops.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class Counter4 extends Component

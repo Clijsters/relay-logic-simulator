@@ -1,17 +1,17 @@
 package resi.util.logicanalyzer;
 
-import java.awt.Color;
+import resi.common.Monitor;
+import resi.common.Signal;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import resi.common.Monitor;
-import resi.common.Signal;
-
 /**
  * Records the values of signals.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class LogicAnalyzer implements Monitor

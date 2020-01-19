@@ -1,16 +1,11 @@
 package resi.library;
 
-import resi.common.Circuit;
-import resi.common.Component;
-import resi.common.Input;
-import resi.common.Joint;
-import resi.common.Output;
-import resi.common.Signal;
+import resi.common.*;
 
 /**
  * This is a flip flop made out of relays. The outputs are connected differently to the other Flip Flop, for easier use
  * in a countdown.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class FlipFlopR extends Component

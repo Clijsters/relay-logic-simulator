@@ -1,12 +1,12 @@
 package resi.library;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import resi.common.Circuit;
 import resi.common.Input;
 import resi.common.Output;
 import resi.common.Part;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Represents a relay with an arbitrary number of switching elements. A relay has a single coil input which determines
@@ -18,7 +18,7 @@ import resi.common.Part;
  * The switches and swotches are created dynamically when a switching element for an index is accessed for the first
  * time. The kind of access determines whether a switch or a swatch is created. For example, if "getMiddleIn(0)" is
  * called, a switch which has a single middle input connector is instantiated and the input is returned.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class Relay extends Part

@@ -1,7 +1,5 @@
 package resi.example.relayclock;
 
-import java.util.concurrent.TimeUnit;
-
 import resi.common.Circuit;
 import resi.common.Component;
 import resi.common.Input;
@@ -10,9 +8,11 @@ import resi.library.Clock;
 import resi.library.Relay;
 import resi.library.Switch;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * This is a simulator for a digital clock built with relays.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class RelayClock extends Component

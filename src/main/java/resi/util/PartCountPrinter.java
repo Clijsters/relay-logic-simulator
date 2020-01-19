@@ -1,16 +1,16 @@
 package resi.util;
 
+import resi.common.Circuit;
+import resi.common.Part;
+import resi.library.Relay;
+import resi.util.console.Console;
+
 import java.util.Map;
 import java.util.TreeMap;
 
-import resi.common.Circuit;
-import resi.common.Part;
-import resi.util.console.Console;
-import resi.library.Relay;
-
 /**
  * A helper class that prints the count of parts of a circuit.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class PartCountPrinter
@@ -21,7 +21,7 @@ public class PartCountPrinter
 
     /**
      * The constructor.
-     * 
+     *
      * @param maxSwitchCount the maximum number of switches that a relay can have
      */
     public PartCountPrinter(Console console, int maxSwitchCount)

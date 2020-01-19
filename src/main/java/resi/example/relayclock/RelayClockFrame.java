@@ -1,25 +1,18 @@
 package resi.example.relayclock;
 
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Frame;
-import java.awt.Panel;
-import java.awt.Toolkit;
+import resi.common.Monitor;
+import resi.common.Simulator;
+import resi.library.Switch;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import resi.common.Monitor;
-import resi.common.Simulator;
-import resi.library.Switch;
-
 /**
  * A window for a graphical visualization of the relay clock.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class RelayClockFrame extends Frame implements Monitor

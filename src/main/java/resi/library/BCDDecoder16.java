@@ -1,14 +1,10 @@
 package resi.library;
 
-import resi.common.Circuit;
-import resi.common.Component;
-import resi.common.Input;
-import resi.common.Output;
-import resi.common.Signal;
+import resi.common.*;
 
 /**
  * This is a decoder that converts a 4-bit BCD value into hexadecimal outputs.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class BCDDecoder16 extends Component

@@ -1,16 +1,12 @@
 package resi.common;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Represents an electronic circuit. A circuit consists of parts and signals that connects parts with each other. Parts
  * and signals can be monitored.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class Circuit

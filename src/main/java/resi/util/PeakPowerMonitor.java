@@ -2,14 +2,14 @@ package resi.util;
 
 import resi.common.Circuit;
 import resi.common.Monitor;
-import resi.util.console.Console;
 import resi.library.Lamp;
 import resi.library.Relay;
+import resi.util.console.Console;
 
 /**
  * This is a monitor implementation that estimates the maximum used power by a circuit. It counts the number of parts
  * that are active / switched on. The absolute maximum values are printed to the console.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class PeakPowerMonitor implements Monitor

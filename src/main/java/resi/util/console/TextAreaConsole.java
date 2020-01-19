@@ -1,10 +1,10 @@
 package resi.util.console;
 
-import java.awt.TextArea;
+import java.awt.*;
 
 /**
  * This is a console implementation which prints all output to a text area component.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class TextAreaConsole extends TextArea implements Console

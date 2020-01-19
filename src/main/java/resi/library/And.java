@@ -1,14 +1,10 @@
 package resi.library;
 
-import resi.common.Circuit;
-import resi.common.Component;
-import resi.common.Input;
-import resi.common.Output;
-import resi.common.Signal;
+import resi.common.*;
 
 /**
  * A logical AND gate built with relays.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class And extends Component
@@ -21,7 +17,7 @@ public class And extends Component
 
     /**
      * The constructor.
-     * 
+     *
      * @param n number of inputs
      */
     public And(Circuit parent, String name, int n)

@@ -1,15 +1,13 @@
 package resi.util.logicanalyzer;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.util.List;
-
 import resi.util.logicanalyzer.LogicAnalyzer.Track;
+
+import java.awt.*;
+import java.util.List;
 
 /**
  * Visualizes the signals that are collected by a logic analyzer.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class LogicAnalyzerCanvas extends Canvas

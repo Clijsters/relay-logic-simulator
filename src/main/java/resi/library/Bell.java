@@ -1,14 +1,14 @@
 package resi.library;
 
-import java.awt.Toolkit;
-
 import resi.common.Circuit;
 import resi.common.Input;
 import resi.common.Part;
 
+import java.awt.*;
+
 /**
  * Simulates a sound signal, like a bell or a buzzer.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class Bell extends Part

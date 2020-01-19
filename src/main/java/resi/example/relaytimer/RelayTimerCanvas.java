@@ -1,14 +1,12 @@
 package resi.example.relaytimer;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics;
-
 import resi.library.SevenSegmentDisplay;
+
+import java.awt.*;
 
 /**
  * A canvas which draws the relay timer display.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class RelayTimerCanvas extends Canvas

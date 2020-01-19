@@ -1,14 +1,10 @@
 package resi.library;
 
-import resi.common.Circuit;
-import resi.common.Component;
-import resi.common.Input;
-import resi.common.Output;
-import resi.common.Signal;
+import resi.common.*;
 
 /**
  * A logical XNOR gate built with relays.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class Xnor extends Component

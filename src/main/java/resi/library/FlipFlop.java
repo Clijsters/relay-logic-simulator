@@ -1,15 +1,10 @@
 package resi.library;
 
-import resi.common.Circuit;
-import resi.common.Component;
-import resi.common.Input;
-import resi.common.Joint;
-import resi.common.Output;
-import resi.common.Signal;
+import resi.common.*;
 
 /**
  * This is a flip flop made out of relays.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class FlipFlop extends Component

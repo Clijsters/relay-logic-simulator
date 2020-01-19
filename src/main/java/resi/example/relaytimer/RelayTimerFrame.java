@@ -1,15 +1,5 @@
 package resi.example.relaytimer;
 
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Panel;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import resi.common.Monitor;
 import resi.common.Simulator;
 import resi.library.Switch;
@@ -17,9 +7,13 @@ import resi.util.SimulatorFrame;
 import resi.util.console.Console;
 import resi.util.console.TextAreaConsole;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  * A window for a graphical visualization of the relay timer.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class RelayTimerFrame extends SimulatorFrame implements Monitor

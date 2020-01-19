@@ -1,23 +1,18 @@
 package resi.example.dice;
 
-import java.util.concurrent.TimeUnit;
-
 import resi.common.Circuit;
 import resi.common.Component;
 import resi.common.Input;
 import resi.common.Signal;
-import resi.library.BCDDecoder10;
-import resi.library.Clock;
-import resi.library.Counter8;
-import resi.library.Relay;
-import resi.library.SevenSegmentDecoder10;
-import resi.library.SevenSegmentDisplay;
+import resi.library.*;
 import resi.util.PartConsoleMonitor;
 import resi.util.console.SystemConsole;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * This is a dice which prints out random values.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class Dice extends Component

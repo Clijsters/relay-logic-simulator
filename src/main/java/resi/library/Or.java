@@ -1,15 +1,10 @@
 package resi.library;
 
-import resi.common.Circuit;
-import resi.common.Component;
-import resi.common.Input;
-import resi.common.Joint;
-import resi.common.Output;
-import resi.common.Signal;
+import resi.common.*;
 
 /**
  * A logical OR gate built with relays.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class Or extends Component
@@ -22,7 +17,7 @@ public class Or extends Component
 
     /**
      * The constructor.
-     * 
+     *
      * @param n number of inputs
      */
     public Or(Circuit parent, String name, int n)

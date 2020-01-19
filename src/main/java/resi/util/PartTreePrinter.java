@@ -1,13 +1,13 @@
 package resi.util;
 
 import resi.common.Circuit;
+import resi.common.Component;
 import resi.common.Part;
 import resi.util.console.Console;
-import resi.common.Component;
 
 /**
  * A helper class that prints the tree of parts of a circuit.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class PartTreePrinter

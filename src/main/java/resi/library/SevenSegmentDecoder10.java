@@ -1,15 +1,10 @@
 package resi.library;
 
-import resi.common.Circuit;
-import resi.common.Component;
-import resi.common.Input;
-import resi.common.Joint;
-import resi.common.Output;
-import resi.common.Signal;
+import resi.common.*;
 
 /**
  * This is a decoder which converts decimal input signals into 7-segment output signals.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class SevenSegmentDecoder10 extends Component

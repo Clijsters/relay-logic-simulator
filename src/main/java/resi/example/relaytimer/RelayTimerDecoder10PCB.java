@@ -1,16 +1,12 @@
 package resi.example.relaytimer;
 
-import resi.common.Circuit;
-import resi.common.Component;
-import resi.common.Input;
-import resi.common.Output;
-import resi.common.Signal;
+import resi.common.*;
 import resi.library.SevenSegmentDecoder10;
 
 /**
  * Represents a PCB for the relay timer containing the 7-segment-decoder for the full value range 0..9. The timer needs
  * one such PCBs.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class RelayTimerDecoder10PCB extends Component

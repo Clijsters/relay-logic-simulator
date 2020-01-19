@@ -1,14 +1,14 @@
 package resi.util;
 
-import java.awt.Frame;
+import resi.common.Simulator;
+
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import resi.common.Simulator;
-
 /**
  * A common super class for windows that show simulation results.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class SimulatorFrame extends Frame

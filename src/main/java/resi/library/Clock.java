@@ -1,14 +1,14 @@
 package resi.library;
 
-import java.util.concurrent.TimeUnit;
-
 import resi.common.Circuit;
 import resi.common.Output;
 import resi.common.Part;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * This is a clock generator that generates a clock with a configurable frequency.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class Clock extends Part

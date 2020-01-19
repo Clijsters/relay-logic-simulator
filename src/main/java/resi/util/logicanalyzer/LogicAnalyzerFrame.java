@@ -1,16 +1,14 @@
 package resi.util.logicanalyzer;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
 import resi.common.Monitor;
 import resi.common.Simulator;
 import resi.util.SimulatorFrame;
 
+import java.awt.*;
+
 /**
  * A simple window showing a logic analyzer.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class LogicAnalyzerFrame extends SimulatorFrame implements Monitor

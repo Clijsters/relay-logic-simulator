@@ -1,6 +1,5 @@
 package resi.library;
 
-import lombok.Getter;
 import resi.common.Circuit;
 import resi.common.Component;
 import resi.common.Input;
@@ -11,7 +10,6 @@ import resi.common.Signal;
  *
  * @author Peter H&auml;nsgen
  */
-@Getter
 public class SevenSegmentDisplay extends Component {
 
     private final Lamp a;
@@ -105,4 +103,60 @@ public class SevenSegmentDisplay extends Component {
 
         return sb.toString();
     }
+
+	public Lamp getA() {
+		return this.a;
+	}
+
+	public Lamp getB() {
+		return this.b;
+	}
+
+	public Lamp getC() {
+		return this.c;
+	}
+
+	public Lamp getD() {
+		return this.d;
+	}
+
+	public Lamp getE() {
+		return this.e;
+	}
+
+	public Lamp getF() {
+		return this.f;
+	}
+
+	public Lamp getG() {
+		return this.g;
+	}
+
+	public Input getInA() {
+		return this.inA;
+	}
+
+	public Input getInB() {
+		return this.inB;
+	}
+
+	public Input getInC() {
+		return this.inC;
+	}
+
+	public Input getInD() {
+		return this.inD;
+	}
+
+	public Input getInE() {
+		return this.inE;
+	}
+
+	public Input getInF() {
+		return this.inF;
+	}
+
+	public Input getInG() {
+		return this.inG;
+	}
 }

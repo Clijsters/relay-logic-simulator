@@ -1,16 +1,16 @@
 package resi.example.blinker;
 
-import java.util.concurrent.TimeUnit;
-
 import resi.common.Circuit;
 import resi.common.Component;
 import resi.common.Signal;
 import resi.library.Clock;
 import resi.library.Lamp;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * This is a simple blinker which periodically switches a light on and off.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class Blinker extends Component

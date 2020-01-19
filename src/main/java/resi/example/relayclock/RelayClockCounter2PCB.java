@@ -1,11 +1,6 @@
 package resi.example.relayclock;
 
-import resi.common.Circuit;
-import resi.common.Component;
-import resi.common.Input;
-import resi.common.Joint;
-import resi.common.Output;
-import resi.common.Signal;
+import resi.common.*;
 import resi.library.BCDDecoder10;
 import resi.library.Counter4;
 import resi.library.Relay;
@@ -13,7 +8,7 @@ import resi.library.Relay;
 /**
  * Represents a PCB for the relay clock that contains a counter, a BCD decoder and the set / reset logic for a digit.
  * The counter counts up to 2.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class RelayClockCounter2PCB extends Component

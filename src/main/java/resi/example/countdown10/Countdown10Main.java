@@ -1,23 +1,18 @@
 package resi.example.countdown10;
 
-import java.util.concurrent.TimeUnit;
-
 import resi.common.Circuit;
 import resi.common.Power;
 import resi.common.Signal;
 import resi.common.Simulator;
-import resi.library.BCDDecoder16;
-import resi.library.Clock;
-import resi.library.Countdown16;
-import resi.library.Relay;
-import resi.library.SevenSegmentDecoder16;
-import resi.library.SevenSegmentDisplay;
+import resi.library.*;
 import resi.util.PartConsoleMonitor;
 import resi.util.console.SystemConsole;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Simulates a decimal countdown and shows the result on a 7-segment display.
- * 
+ *
  * @author Peter H&auml;nsgen
  */
 public class Countdown10Main

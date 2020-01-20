@@ -33,7 +33,7 @@ public class CountdownMain {
 		// internal wiring
 		new Signal(circuit).from(power.getOut()).to(countdown.getPowerIn(), decoder.getPowerIn(), bcd.getPowerIn());
 
-		new Signal(circuit).from(clock.get_Out()).to(countdown.get_Clock());
+		new Signal(circuit).from(clock.get_Out()).to(countdown.get_clock());
 		new Signal(circuit).from(clock.getOut()).to(countdown.getClock());
 
 		new Signal(circuit).from(countdown.getOut0()).to(bcd.getIn0());

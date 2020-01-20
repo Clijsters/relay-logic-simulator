@@ -83,7 +83,7 @@ public class RelayClockCounter9PCB extends Component {
 		new Signal(circuit).from(clockIn).to(j.getIn(0));
 		new Signal(circuit).from(setIn).to(j.getIn(1));
 		new Signal(circuit).from(j.getOut()).to(clock.getCoilIn());
-		new Signal(circuit).from(clock.get_Out(0)).to(counter.get_Clock());
+		new Signal(circuit).from(clock.get_Out(0)).to(counter.get_clock());
 		new Signal(circuit).from(clock.getOut(0)).to(counter.getClock());
 
 		new Signal(circuit).from(reset24In).to(reset24.getCoilIn());

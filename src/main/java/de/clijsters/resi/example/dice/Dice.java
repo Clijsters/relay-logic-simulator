@@ -38,7 +38,7 @@ public class Dice extends Component {
 		// internal wiring
 		new Signal(circuit).from(powerIn).to(decoder.getPowerIn(), bcd.getPowerIn(), reset.getMiddleIn(0));
 
-		new Signal(circuit).from(clock.get_Out()).to(counter.get_Clock());
+		new Signal(circuit).from(clock.get_Out()).to(counter.get_clock());
 		new Signal(circuit).from(clock.getOut()).to(counter.getClock());
 
 		new Signal(circuit).from(counter.getOut0()).to(bcd.getIn0());

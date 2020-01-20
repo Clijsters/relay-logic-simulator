@@ -41,18 +41,18 @@ public class Counter4 extends Component {
 		new Signal(local).from(powerIn).to(f0.getPowerIn(), f1.getPowerIn());
 
 		// connect the flip flops with each other for form a 4-bit counter
-		new Signal(local).from(_clock).to(f0.get_Clock());
+		new Signal(local).from(_clock).to(f0.get_clock());
 		new Signal(local).from(clock).to(f0.getClock());
 
 		// inverse external outputs, otherwise it would count backwards
 		new Signal(local).from(f0.getOut()).to(out0).to(f1.getClock());
 		new Signal(local).from(f1.getOut()).to(out1);
 
-		new Signal(local).from(f0.get_Out()).to(_out0).to(f1.get_Clock());
+		new Signal(local).from(f0.get_Out()).to(_out0).to(f1.get_clock());
 		new Signal(local).from(f1.get_Out()).to(_out1);
 	}
 
-	public Input get_Clock() {
+	public Input get_clock() {
 		return _clock;
 	}
 

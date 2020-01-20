@@ -80,7 +80,7 @@ public class FlipFlopR extends Component {
 		return powerIn;
 	}
 
-	public Input get_Clock() {
+	public Input get_clock() {
 		return _clock;
 	}
 

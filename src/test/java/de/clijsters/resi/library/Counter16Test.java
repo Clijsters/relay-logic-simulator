@@ -28,7 +28,7 @@ public class Counter16Test {
 		Input out3 = new Input();
 
 		// test wirings
-		new Signal(circuit).from(_clock).to(counter.get_Clock());
+		new Signal(circuit).from(_clock).to(counter.get_clock());
 		new Signal(circuit).from(clock).to(counter.getClock());
 		new Signal(circuit).from(counter.getOut0()).to(out0);
 		new Signal(circuit).from(counter.getOut1()).to(out1);

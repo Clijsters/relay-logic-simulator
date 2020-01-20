@@ -33,7 +33,7 @@ public class CounterMain {
 		// internal wiring
 		new Signal(circuit).from(power.getOut()).to(counter.getPowerIn(), decoder.getPowerIn(), bcd.getPowerIn());
 
-		new Signal(circuit).from(clock.get_Out()).to(counter.get_Clock());
+		new Signal(circuit).from(clock.get_Out()).to(counter.get_clock());
 		new Signal(circuit).from(clock.getOut()).to(counter.getClock());
 
 		new Signal(circuit).from(counter.getOut0()).to(bcd.getIn0());

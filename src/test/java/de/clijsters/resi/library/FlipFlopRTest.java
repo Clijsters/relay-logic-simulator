@@ -25,7 +25,7 @@ public class FlipFlopRTest {
 		Input _q = new Input();
 		Input q = new Input();
 
-		new Signal(circuit).from(_cl).to(ff.get_Clock());
+		new Signal(circuit).from(_cl).to(ff.get_clock());
 		new Signal(circuit).from(cl).to(ff.getClock());
 		new Signal(circuit).from(ff.get_Out()).to(_q);
 		new Signal(circuit).from(ff.getOut()).to(q);

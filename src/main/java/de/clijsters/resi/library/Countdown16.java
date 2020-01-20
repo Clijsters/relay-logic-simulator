@@ -51,7 +51,7 @@ public class Countdown16 extends Component {
 		new Signal(local).from(powerIn).to(f0.getPowerIn(), f1.getPowerIn(), f2.getPowerIn(), f3.getPowerIn());
 
 		// connect the flip flops with each other for form a 4-bit counter
-		new Signal(local).from(_clock).to(f0.get_Clock());
+		new Signal(local).from(_clock).to(f0.get_clock());
 		new Signal(local).from(clock).to(f0.getClock());
 
 		// inverse external outputs, otherwise it would count backwards
@@ -60,13 +60,13 @@ public class Countdown16 extends Component {
 		new Signal(local).from(f2.getOut()).to(out2).to(f3.getClock());
 		new Signal(local).from(f3.getOut()).to(out3);
 
-		new Signal(local).from(f0.get_Out()).to(_out0).to(f1.get_Clock());
-		new Signal(local).from(f1.get_Out()).to(_out1).to(f2.get_Clock());
-		new Signal(local).from(f2.get_Out()).to(_out2).to(f3.get_Clock());
+		new Signal(local).from(f0.get_Out()).to(_out0).to(f1.get_clock());
+		new Signal(local).from(f1.get_Out()).to(_out1).to(f2.get_clock());
+		new Signal(local).from(f2.get_Out()).to(_out2).to(f3.get_clock());
 		new Signal(local).from(f3.get_Out()).to(_out3);
 	}
 
-	public Input get_Clock() {
+	public Input get_clock() {
 		return _clock;
 	}
 

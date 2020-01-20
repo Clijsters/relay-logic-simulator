@@ -35,7 +35,7 @@ public class Counter10Main {
 		// internal wiring
 		new Signal(circuit).from(power.getOut()).to(decoder.getPowerIn(), bcd.getPowerIn(), reset.getMiddleIn(0));
 
-		new Signal(circuit).from(clock.get_Out()).to(counter.get_Clock());
+		new Signal(circuit).from(clock.get_Out()).to(counter.get_clock());
 		new Signal(circuit).from(clock.getOut()).to(counter.getClock());
 
 		new Signal(circuit).from(reset.get_Out(0)).to(counter.getPowerIn());

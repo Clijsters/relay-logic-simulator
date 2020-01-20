@@ -109,18 +109,18 @@ public class RelayTimer extends Component {
 		new Signal(local).from(jointBell.getOut()).to(bell.getIn());
 
 		// connect start switch with clock generator
-		new Signal(local).from(startSwitch.get_Out()).to(startStop.get_Clock());
+		new Signal(local).from(startSwitch.get_Out()).to(startStop.get_clock());
 		new Signal(local).from(startSwitch.getOut()).to(startStop.getClock());
 		new Signal(local).from(startStop.getOut()).to(clockS0.getCoilIn(), alarm.getIn(4), preAlarm.getIn(4));
 		new Signal(local).from(clock.get_Out()).to(clockS0.getMiddleIn(0));
 		new Signal(local).from(clock.getOut()).to(clockS0.getMiddleIn(1));
-		new Signal(local).from(clockS0.getOut(0)).to(counterS0.get_Clock());
+		new Signal(local).from(clockS0.getOut(0)).to(counterS0.get_clock());
 		new Signal(local).from(clockS0.getOut(1)).to(counterS0.getClock());
 
 		// connect clock and overflows with counters
-		// new Signal(local).from(clock.get_Out()).to(counterS0.get_Clock());
+		// new Signal(local).from(clock.get_Out()).to(counterS0.get_clock());
 		// new Signal(local).from(clock.getOut()).to(counterS0.getClock());
-		new Signal(local).from(resetS0.get_Out(1)).to(counterS1.get_Clock());
+		new Signal(local).from(resetS0.get_Out(1)).to(counterS1.get_clock());
 		new Signal(local).from(resetS0.getOut(1)).to(counterS1.getClock());
 		new Signal(local).from(resetS1.getOut(1)).to(jointM0.getIn(0));
 		new Signal(local).from(resetM0.getOut(1)).to(jointM1.getIn(0));
@@ -128,12 +128,12 @@ public class RelayTimer extends Component {
 
 		new Signal(local).from(setM0Switch.getOut()).to(jointM0.getIn(1));
 		new Signal(local).from(jointM0.getOut()).to(clockM0.getCoilIn());
-		new Signal(local).from(clockM0.get_Out(0)).to(counterM0.get_Clock());
+		new Signal(local).from(clockM0.get_Out(0)).to(counterM0.get_clock());
 		new Signal(local).from(clockM0.getOut(0)).to(counterM0.getClock());
 
 		new Signal(local).from(setM1Switch.getOut()).to(jointM1.getIn(1));
 		new Signal(local).from(jointM1.getOut()).to(clockM1.getCoilIn());
-		new Signal(local).from(clockM1.get_Out(0)).to(counterM1.get_Clock());
+		new Signal(local).from(clockM1.get_Out(0)).to(counterM1.get_clock());
 		new Signal(local).from(clockM1.getOut(0)).to(counterM1.getClock());
 
 		// decimal decoders

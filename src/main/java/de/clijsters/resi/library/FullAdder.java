@@ -14,12 +14,12 @@ public class FullAdder extends Component {
     private HalfAdder halfAdderA;
     private HalfAdder halfAdderB;
     private Or or;
-    private Input powerIn;
-    private Input inA;
-    private Input inB;
-    private Input inCarry;
-    private Output outSum;
-    private Output outCarry;
+    private Input powerIn = new Input();
+    private Input inA = new Input();
+    private Input inB = new Input();
+    private Input inCarry = new Input();
+    private Output outSum = new Output();
+    private Output outCarry = new Output();
 
     /**
      * The constructor.
@@ -32,8 +32,9 @@ public class FullAdder extends Component {
         Circuit local = getLocalCircuit();
         halfAdderA = new HalfAdder(local, name + "_HAA");
         halfAdderB = new HalfAdder(local, name + "_HAB");
+        or = new Or(local, name + "_OR", 2);
 
-        new Signal(local).from(powerIn).to(halfAdderA.getPowerIn(), halfAdderB.getPowerIn());
+        new Signal(local).from(powerIn).to(halfAdderA.getPowerIn(), halfAdderB.getPowerIn(), or.getPowerIn());
 
         new Signal(local).from(inCarry).to(halfAdderB.getInA());
         new Signal(local).from(halfAdderA.getOutSum()).to(halfAdderB.getInB());

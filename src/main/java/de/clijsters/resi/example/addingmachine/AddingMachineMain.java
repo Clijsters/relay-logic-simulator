@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class AddingMachineMain {
@@ -31,7 +32,7 @@ public class AddingMachineMain {
 
 		List<Boolean> aIn = binStringToBoolList(aString);
 		List<Boolean> bIn = binStringToBoolList(bString);
-		IntStream.range(0,9).forEach(value -> {
+		IntStream.range(0, 10).forEach(value -> {
 			Signal aSignal = new Signal(circuit, "ain_" + value);
 			aSignal.setValue(aIn.get(value));
 			tenBitAdder.getInputsA().get(value).setSignal(aSignal);
@@ -44,16 +45,18 @@ public class AddingMachineMain {
 		circuit.simulate();
 
 
-
-		tenBitAdder.getOutputsSum().stream().map(Output::getSignal).map(Signal::getValue).forEach(output -> {
-			System.out.print(output ? "1" : "0");
-		});
+		tenBitAdder.getOutputsSum().stream()
+				.map(Output::getSignal)
+				.map(Signal::getValue)//Duplicated
+				.map(aBoolean -> Optional.ofNullable(aBoolean).orElse(false))
+				.map(aBoolean -> aBoolean ? "1" : "0")
+				.forEach(System.out::print);
 	}
 
 	private static List<Boolean> binStringToBoolList(String binaryNumber) {
 		List<Boolean> result = new ArrayList<>();
 		for (char c : binaryNumber.toCharArray()) {
-			result.add('1'== c);
+			result.add('1' == c);
 		}
 		return result;
 	}

@@ -7,6 +7,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Getter
 public class TenBitAdder extends Component {
@@ -21,12 +22,23 @@ public class TenBitAdder extends Component {
 	public TenBitAdder(Circuit parent, String name) {
 		super(parent, name);
 		Circuit local = getLocalCircuit();
+		Power vcc = new Power(local, "VCC");
 		for (int i = 0; i < 10; i++) {
 			final FullAdder fullAdder = new FullAdder(local, "TenBitAdder_FA" + i);
 			fullAdders.add(fullAdder);
-			inputsA.add(fullAdder.getInA());
-			inputsB.add(fullAdder.getInB());
-			outputsSum.add(fullAdder.getOutSum());
+
+
+			Input aInput = new Input();
+			new Signal(local).from(aInput).to(fullAdder.getInA());
+			inputsA.add(aInput);
+
+			Input bInput = new Input();
+			new Signal(local).from(bInput).to(fullAdder.getInB());
+			inputsB.add(bInput);
+
+			Output sumOut = new Output();
+			new Signal(local).from(sumOut).to(fullAdder.getOutSum());
+			outputsSum.add(sumOut);
 
 			if (i == 0) {
 				new Signal(local).from(inputCarry).to(fullAdder.getInCarry());
@@ -37,6 +49,10 @@ public class TenBitAdder extends Component {
 				}
 			}
 		}
+		List<Input> inputs = fullAdders.stream().map(FullAdder::getPowerIn).collect(Collectors.toList());
+		Input[] t = {};
+
+		new Signal(local).from(vcc.getOut()).to(inputs.toArray(t));
 	}
 
 	public int getSum() {

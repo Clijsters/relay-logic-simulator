@@ -7,6 +7,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Getter
@@ -37,15 +38,15 @@ public class TenBitAdder extends Component {
 			inputsB.add(bInput);
 
 			Output sumOut = new Output();
-			new Signal(local).from(sumOut).to(fullAdder.getOutSum());
+			new Signal(local).from(fullAdder.getOutSum()).to(sumOut);
 			outputsSum.add(sumOut);
 
 			if (i == 0) {
-				new Signal(local).from(inputCarry).to(fullAdder.getInCarry());
+				new Signal(local).from(fullAdder.getOutCarry()).to(outputCarry);
 			} else {
-				new Signal(local).from(fullAdders.get(i - 1).getOutCarry()).to(fullAdder.getInCarry());
+				new Signal(local).from(fullAdder.getOutCarry()).to(fullAdders.get(i - 1).getInCarry());
 				if (i == 9) {
-					new Signal(local).from(fullAdder.getOutCarry()).to(outputCarry);
+					new Signal(local).from(inputCarry).to(fullAdder.getInCarry());
 				}
 			}
 		}
@@ -55,12 +56,21 @@ public class TenBitAdder extends Component {
 		new Signal(local).from(vcc.getOut()).to(inputs.toArray(t));
 	}
 
-	public int getSum() {
-		StringBuilder stringBuilder = new StringBuilder(10);
-		outputsSum.forEach(output -> {
-			stringBuilder.append(Optional.ofNullable(output.getSignal().getValue()).orElse(false) ? "1" : "0");
-		});
+	public int getSumDec() {
+		return Integer.parseInt(getSumBin(), 2);
+	}
 
-		return Integer.parseInt(stringBuilder.toString(), 2);
+	public String getSumBin() {
+		StringBuilder stringBuilder = new StringBuilder(11);
+		Consumer<Output> outputConsumer = output -> {
+			stringBuilder
+					.append(Optional.ofNullable(output
+							.getSignal()
+							.getValue())
+							.orElse(false) ? "1" : "0");
+		};
+		outputConsumer.accept(outputCarry);
+		outputsSum.forEach(outputConsumer);
+		return stringBuilder.toString();
 	}
 }
